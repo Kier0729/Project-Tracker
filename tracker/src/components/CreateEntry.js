@@ -12,6 +12,8 @@ function CreateEntry(){
     const [data, setData] = useState({date:"", merchant:"", amount:""});
     const [currentDate, setCurrentDate] = useState(`${month}/${day}/${year}`);
 
+    const onAdd = useContext(Context);
+    // console.log(onAdd); Check Home.js for the value of Context that is being pass in CreateEntry.js
     useEffect(()=>{
         let process = true;
         fetchDate(process);//executing/calling fetchDate and passing the process as true
@@ -37,7 +39,6 @@ function CreateEntry(){
         );
     }
 
-    const onAdd = useContext(Context); //passing the data received
     return(
         <div className="createEntry">
             <label>{currentDate}</label>
@@ -48,6 +49,7 @@ function CreateEntry(){
             <button type="submit" onClick={(event)=>{
                 onAdd(data);
                 event.preventDefault();
+                setData({date:"", merchant:"", amount:""});
             }}>Add</button>
         </div>
     );

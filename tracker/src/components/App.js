@@ -1,7 +1,6 @@
 import React, {useState} from "react"
-import CreateEntry from "./CreateEntry";
-import Entry from "./Entry";
 import Context from "./Context"; //use for passing data to components/child using (Context.Provider)
+import Router from "./Router";
 
 function App(){
     const[data, setData] = useState([
@@ -10,15 +9,22 @@ function App(){
         {date: "3", merchant: "z", amount: "3.00"}
     ]);
 
+    const [value , setValue] = useState();
+
     function handleAdd(received){
-        setData((prev)=>{//passing previous value
+        setData((prev)=>{//using callback/function to pass previous value(prev) of data
             return([...prev, received]);//return the value to be use in setData
         })
+    }
+
+    function handleModify(received){
+        setValue(received);
+        // console.log(received);
     }
     
     return (
     <div>
-        <Context.Provider value={handleAdd}> 
+        {/* <Context.Provider value={handleAdd}> 
         <CreateEntry />
         </Context.Provider>
         
@@ -28,7 +34,11 @@ function App(){
             <Context.Provider key={index} value={{...items, id:index, handleAdd}}> 
                 <Entry />
             </Context.Provider>
-        ))}
+        ))} */}
+{/*passing data/function as an OBJECT to all of the child*/}
+        <Context.Provider value={{data:data, onAdd:handleAdd, onModify:handleModify, value:value}}> {/*passing data to all of the child*/}
+            <Router />{/**/}
+        </Context.Provider>
     </div>
     );
 }
