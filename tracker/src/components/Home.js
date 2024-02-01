@@ -18,7 +18,7 @@ function Home(){
             items = {...items, id:index};//setting the value of items to include an index value
             return(
 //value={OBJECT items:items+id OBJECT onModify function from the apps}                
-            <Context.Provider key={index} value={{items:items, value:data.value, onModify:data.onModify}}>
+            <Context.Provider key={index} value={{items:items, value:data.value, onDoubleClick:data.onDoubleClick, onModify:data.onModify}}>
                 <Entry />
             </Context.Provider>
             );

@@ -5,20 +5,60 @@ import { useNavigate } from "react-router-dom"; //for frontend routing//import u
 
 function Modify(){
     const data = useContext(Context); //passing the data received
-    const [modify, setModify] = useState();
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
-
-    function handleClick(){
-        setModify(data.value);
-        // data.onModify(modify);
-        console.log(data.value);
-    }
+    const [modify, setModify] = useState({
+        id:data.selectedItem.id,
+        date:data.selectedItem.date,
+        merchant:data.selectedItem.merchant,
+        amount:data.selectedItem.amount,
+    });
     
+    function handleChange(event){
+        console.log(event.target.value);
+        setModify((prev)=>{
+            if(event.target.name==="date"){
+                return({
+                    id:prev.id,
+                    date:event.target.value,
+                    merchant:prev.merchant,
+                    amount:prev.amount,
+                });
+            }
+            if(event.target.name==="merchant"){
+                return({
+                    id:prev.id,
+                    date:prev.date,
+                    merchant:event.target.value,
+                    amount:prev.amount,
+                });
+            }
+            if(event.target.name==="amount"){
+                return({
+                    id:prev.id,
+                    date:prev.date,
+                    merchant:prev.merchant,
+                    amount:event.target.value,
+                });
+            }
+        }  
+        )}
+
     return(
         <div className="createEntry" >
-            <h1 onClick={handleClick}>Modify</h1>
-            <h1>{modify}</h1>
-            <h1 onClick={()=>{navigate("/")}}>Go Back</h1>
+            <input name="date" value={modify.date} onChange={handleChange} ></input>
+            <input name="merchant" value={modify.merchant} onChange={handleChange} ></input>
+            <input name="amount" value={modify.amount} onChange={handleChange} ></input>
+            <div>
+                <h1 onClick={()=>{
+                    navigate("/");
+                    data.onModify(modify);
+                    }}>Save</h1>
+                <h1 onClick={()=>{
+                    navigate("/");
+                    data.onDelete(modify.id);
+                    }}>Delete</h1>
+                <h1 onClick={()=>{navigate("/")}}>Back</h1>
+            </div>
         </div>
     );
 }
