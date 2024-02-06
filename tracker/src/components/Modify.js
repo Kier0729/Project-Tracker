@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"; //for frontend routing//import u
 function Modify(){
     const data = useContext(Context); //passing the data received
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
+
     const [modify, setModify] = useState({
         id:data.selectedItem.id,
         date:data.selectedItem.date,
@@ -14,7 +15,7 @@ function Modify(){
     });
     
     function handleChange(event){
-        console.log(event.target.value);
+        // console.log(event.target.value);
         setModify((prev)=>{
             if(event.target.name==="date"){
                 return({

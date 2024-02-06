@@ -10,8 +10,8 @@ function CreateEntry(){
     const year = date.getFullYear();
     
     const [data, setData] = useState({date:"", merchant:"", amount:""});
-    const [currentDate, setCurrentDate] = useState(`${month}/${day}/${year}`);
-
+    const [currentDate, setCurrentDate] = useState(`${day}/${month}/${year}`);
+    const [displayDate, setDisplayDate] = useState(`${month}/${day}/${year}`);
     const onAdd = useContext(Context);
     // console.log(onAdd); Check Home.js for the value of Context that is being pass in CreateEntry.js
     useEffect(()=>{
@@ -23,7 +23,10 @@ function CreateEntry(){
     },[]);
 
     function fetchDate(isTrue){//set the currentDate if "TRUE" month + 1 January value is = 0
-        {isTrue && (setCurrentDate(`${month+1}/${day}/${year}`))}//
+//DD/MM/YY is the default formart of postgresql for date so we need to set the date to this format
+        {isTrue && (setCurrentDate(`${day}/${month+1}/${year}`))}
+//Display date will be set to MM/DD/YY        
+        {isTrue && (setDisplayDate(`${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}/${year}`))}
     }
     
     function handleChange(event){
@@ -38,10 +41,9 @@ function CreateEntry(){
             })
         );
     }
-
     return(
         <div className="createEntry">
-            <label>{currentDate}</label>
+            <label>{displayDate}</label>
             <input type="text" name="merchant" placeholder="Merchant:" value={data.merchant} onChange={handleChange}></input>
             <input type="text" name="amount" placeholder="Amount" value={data.amount} onChange={handleChange}></input>
             {/*function received from parent should be put inside a function

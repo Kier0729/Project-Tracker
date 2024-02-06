@@ -1,4 +1,3 @@
-
 import React, {useContext} from "react"; 
 //useContext import is use to accept/received data from the parent components for receiver of Context.Provider
 import { useNavigate } from "react-router-dom"; //for frontend routing//import useNavigate
@@ -14,6 +13,7 @@ function Entry(){
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
 
     return(
+        
         <div type="submit" className="createEntry" id={data.items.id} onDoubleClick={(event)=>{
 {/* below/here calling onDoubleClick funtion from Apps.js and pass the element that triggers the event*/}        
                 data.onDoubleClick(event);
@@ -23,6 +23,7 @@ function Entry(){
             <label name="merchant" >{merchant}</label>
             <label name="amount" >{amount}</label>
         </div>
+
     );
 }
 
