@@ -14,12 +14,14 @@ const[data, setData] = useState([{id: "", date: "", merchant: "", amount: ""}]);
 //////////////////////////////////////////////////////////////////
     async function axiosFetchData(process){
         if(process){
+            try{
             await axios.get("http://localhost:4000/"/*, options*/) //for post/put/patch/delete request needs opstions
             //.then(res => res.json()) axios dont need to convert json
             .then(res => {
                 setData(res.data);
                 // console.log("AxiosFetchData Executed!");
             })
+        } catch(error){console.log(error.message);}
         }
     }
 //////////////////////////////////////////////////////////////////

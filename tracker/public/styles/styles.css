@@ -1,3 +1,4 @@
+
 .createEntry{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -6,4 +7,48 @@
 
 .createEntry label{
     z-index: -1;
+}
+.login{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login>div{
+    height: fit-content;
+    width: fit-content;
+    display: grid;
+    grid-template-rows: .5fr , .5fr, 1fr;
+    gap: 5px;
+}
+
+.login>div>div{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+.button{
+    display: flex;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+
+.register>div{
+    height: fit-content;
+    width: fit-content;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, .5fr);
+    gap: 5px;    
+}
+.register>div>div{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+.register{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
