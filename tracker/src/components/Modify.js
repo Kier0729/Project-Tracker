@@ -51,14 +51,14 @@ function Modify(){
             <input name="amount" value={modify.amount} onChange={handleChange} ></input>
             <div>
                 <h1 onClick={()=>{
-                    navigate("/");
+                    navigate("/Home");
                     data.onModify(modify);
                     }}>Save</h1>
                 <h1 onClick={()=>{
-                    navigate("/");
+                    navigate("/Home");
                     data.onDelete(modify.id);
                     }}>Delete</h1>
-                <h1 onClick={()=>{navigate("/")}}>Back</h1>
+                <h1 onClick={()=>{navigate("/Home")}}>Back</h1>
             </div>
         </div>
     );

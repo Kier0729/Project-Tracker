@@ -4,12 +4,13 @@ import Entry from "./Entry";
 import Context from "./Context"; //use for passing data to components/child using (Context.Provider)
 
 function Home(){
-    const data = useContext(Context); //passing the data received to a const data
-    // console.log(data);
+     const data = useContext(Context); //passing the data received to a const data
 
     return(
         <div>
-
+            <div>
+                <h3>Login under: {data.user.fname} {data.user.lname}</h3>
+            </div>
             <Context.Provider value={data.onAdd}>{/* select to ONLY pass the function onAdd check Apps.js*/}
                 <CreateEntry />
             </Context.Provider>
