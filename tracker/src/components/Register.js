@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import { useNavigate } from "react-router-dom"; //for frontend routing//import useNavigate
+import { Link, useNavigate } from "react-router-dom"; //for frontend routing//import useNavigate
 import axios from "axios";
 import Context from "./Context"
 
@@ -65,9 +65,10 @@ function Register(){
                     setplaceHold(null);
                     event.preventDefault();
                     // document.register.submit();
-                    await axios.post(`${process.env.REACT_APP_API_URL}Register`, cred)
+                    await axios.post(`${process.env.REACT_APP_API_URL}Register`, cred, {withCredentials: true})
                     .then(res=>{
                         data.setUser(res.data);
+                        data.axiosFetchData();//Then update data
                         // console.log(`data received: ${res.data}`);
                         res.data ? navigate("/Home") : navigate("/");
                     });//
@@ -103,9 +104,7 @@ return(<div className="register">
             <div></div>
             <div className="button">
                 <button type="submit">Register</button>
-                <button onClick={()=>{
-                    navigate("/");
-                }}>Cancel</button>
+                <Link to="/"><button>Cancel</button></Link>
             </div>        
         </div>
     </form>

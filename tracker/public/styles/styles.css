@@ -3,10 +3,61 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 5px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    padding: .10rem;
+    text-align: center;
+    justify-items: center;
+}
+.entry{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: .10rem;
+    height: fit-content;
 }
 
-.createEntry label{
+/* To set div to display at top so when the user click it will click the div instead of the label 
+when doubleclicking an entry*/
+.entry label{
     z-index: -1;
+}
+.modify{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+.modify input{
+    height: fit-content;
+}
+.modify div{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: .1rem;
+    padding: .2rem;
+    height: fit-content;
+}
+.modify div button{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: .2rem;
+    height: fit-content;
+}
+.modify div label{
+text-align: center;
+}
+.createEntry>button{
+    width: fit-content;
+    grid-column-start: -1;
+    grid-column-end: 4;
+    grid-row-start: -1;
+    grid-row-end: -2;
 }
 .login{
     height: 100vh;
@@ -51,4 +102,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.navBar{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+}
+.navBar>button{
+    height:fit-content;
 }

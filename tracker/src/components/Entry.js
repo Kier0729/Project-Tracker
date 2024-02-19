@@ -13,11 +13,12 @@ function Entry(){
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
 
     return(
-        
-        <div type="submit" className="createEntry" id={data.items.id} onDoubleClick={(event)=>{
+    //Here z-index of label is set to -1 so when a user click a label it will click the div instead    
+    //the event trigger will be set to div istead of the label
+        <div type="submit" className="entry" id={data.items.id} onDoubleClick={(event)=>{
 {/* below/here calling onDoubleClick funtion from Apps.js and pass the element that triggers the event*/}        
                 data.onDoubleClick(event);
-                navigate("/modify"); {/* ()=> {navigate("/modify")} call navigate when doubleclick*/}
+                navigate("/Modify"); {/* ()=> {navigate("/modify")} call navigate when doubleclick*/}
             }}> 
             <label name="date" >{date}</label>
             <label name="merchant" >{merchant}</label>

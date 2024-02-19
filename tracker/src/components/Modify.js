@@ -45,20 +45,25 @@ function Modify(){
         )}
 
     return(
-        <div className="createEntry" >
+        <div className="modify" >
+            <div>
+            <label>Date</label>
+            <label>Merchant</label>
+            <label>Amount</label>
             <input name="date" value={modify.date} onChange={handleChange} ></input>
             <input name="merchant" value={modify.merchant} onChange={handleChange} ></input>
             <input name="amount" value={modify.amount} onChange={handleChange} ></input>
+            </div>
             <div>
-                <h1 onClick={()=>{
+                <button onClick={()=>{
                     navigate("/Home");
                     data.onModify(modify);
-                    }}>Save</h1>
-                <h1 onClick={()=>{
+                    }}>Save</button>
+                <button onClick={()=>{
                     navigate("/Home");
                     data.onDelete(modify.id);
-                    }}>Delete</h1>
-                <h1 onClick={()=>{navigate("/Home")}}>Back</h1>
+                    }}>Delete</button>
+                <button onClick={()=>{navigate("/Home")}}>Back</button>
             </div>
         </div>
     );

@@ -9,7 +9,7 @@ import axios from "axios";
 
 function Router(){
   const data = useContext(Context);
-  const user = data.user;//user in App.js need to be declare/initialize as an object {}
+  const user = data.user;//user in App.js need to be declare/initialize as an object {}/null
       function Layout(){
         return(
         <>
@@ -28,7 +28,8 @@ function Router(){
             <Route path="/" element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
             <Route path="/Register" element={<Register />}/>{/*Outlet/Child*/}
             <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/>Outlet/Child
-            <Route path="/modify" element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
+            <Route path="/Modify" element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
+            {/* {console.log(user)} */}
           </Route>
         </Routes>
     </BrowserRouter>
