@@ -58,6 +58,7 @@ function Modify(){
                 <button onClick={()=>{
                     navigate("/Home");
                     data.onModify(modify);
+                    data.fetchYear();
                     }}>Save</button>
                 <button onClick={()=>{
                     navigate("/Home");

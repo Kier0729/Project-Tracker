@@ -105,11 +105,30 @@ text-align: center;
 }
 
 .navBar{
-    display: flex;
+    /* display: flex; */
+    display: grid;
+    grid-auto-flow: column;
     justify-content: flex-end;
     align-items: center;
-    gap: 1rem;
+    gap: .2rem;
+}
+.navBar>div{
+    position: absolute;
+    justify-self: flex-start;
+}
+
+.navBar>div>h4>label{
+    color: red;
 }
 .navBar>button{
     height:fit-content;
+}
+.navBar label{
+    width: fit-content;
+}
+#endCycle{
+    height: fit-content;
+    width: 1rem;
+    text-align: center;
+    font-weight: bolder;
 }

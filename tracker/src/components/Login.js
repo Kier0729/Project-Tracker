@@ -9,6 +9,7 @@ function Login(){
 
     const[cred, setCred] = useState({username:"", password:""});
     const[placeHold, setplaceHold] = useState(null);
+
     function handleChanged(event){
         const{name, value} = event.target;
         setCred((prev)=>{
@@ -28,6 +29,7 @@ function Login(){
                         // console.log(`data received:`);
                         // console.log(res.data);
                         if (user_email){ 
+                            data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
                             data.setUser(res.data);
                             data.axiosFetchData();
                             navigate("/Home");

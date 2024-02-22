@@ -13,18 +13,29 @@ const[data, setData] = useState([{entry_id: "", id: "", date: "", merchant: "", 
 //////////////////////////////////////////////////////////////////
 
 const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object}/null
-//useEffect executes when the program starts
+
+const[total, setTotal] = useState(null);
 //////////////////////////////////////////////////////////////////
 
-const date = new Date();
-const month = date.getMonth();
+////////////////Store Data received selected value//////////////////////
+const[selectedItem, setSelectedItem]=useState({
+    id:"",
+    date:"",
+    merchant:"",
+    amount:"",
+});
+//This will received the value of the element that triggers the event(check Entry.js)
+//////////////////////////////////////////////////////////////////
+
 const [selectedMonth, setSelectedMonth] = useState(null);
+const [selectedYear, setSelectedYear] = useState(null);
 
 //use for http request to api/server fetching data
 //////////////////////////////////////////////////////////////////
 async function axiosFetchData(){
+    fetchYear();
     // if(isTrue){
-        try{//option should be declared as an object
+        try{//option should be declared as an object // { withCredentials: true } to send back cookies to server
         await axios.post(`${process.env.REACT_APP_API_URL}fetch`, {selectedMonth:selectedMonth}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then((res) => {
@@ -35,6 +46,14 @@ async function axiosFetchData(){
     // }
 }
 //////////////////////////////////////////////////////////////////
+
+async function fetchYear(){
+    await axios.get(`${process.env.REACT_APP_API_URL}year`).then(
+        res => {
+            setSelectedYear(res.data);
+        }
+    )
+}
 
 useEffect(()=>{
 //   let process = true;
@@ -63,6 +82,7 @@ useEffect(()=>{
     // }
   }
     fetchUser();
+    
 //   console.log("UseEffect Initiated!");
 //   return ()=>{
 //       process = false;//to stop executing continuously
@@ -80,16 +100,6 @@ useEffect(()=>{
     // },[]);
 //////////////////////////////////////////////////////////////////
 
-////////////////Store Data received selected value//////////////////////
-    const[selectedItem, setSelectedItem]=useState({
-        id:"",
-        date:"",
-        merchant:"",
-        amount:"",
-    });
-
-//This will received the value of the element that triggers the event(check Entry.js)
-//////////////////////////////////////////////////////////////////
 function handleDoubleClick(event){
     const {date:val1, merchant:val2, amount:val3} = event.target.children;
     setSelectedItem({
@@ -109,6 +119,15 @@ function handleDoubleClick(event){
         //     return([...prev, received]);//return the value to be use in setData (WHEN SERVER IS NOT YET PRESENT)
         // })
         
+        var newDate = new Date(received.date);
+        // console.log(newDate);
+        received = {
+            entry_id: received.entry_id,
+            date: `${newDate.getDate()}/${newDate.getMonth()+1}/${newDate.getFullYear()}`,
+            merchant: received.merchant,
+            amount: received.amount
+        }
+        console.log(received.date);
         //if server is present
         await axios.post(process.env.REACT_APP_API_URL, {...received, selectedMonth:selectedMonth})//postData(hence use receieved) here is not updated when this is executed
         .then(res=>{
@@ -138,6 +157,7 @@ function handleDoubleClick(event){
         }
         await axios.patch(`${process.env.REACT_APP_API_URL}update`, {...received, selectedMonth:selectedMonth})
         .then(res=>{setData(res.data);})//Update the value of data
+        fetchYear();
     }
 //////////////////////////////////////////////////////////////////
 
@@ -162,9 +182,9 @@ function handleDoubleClick(event){
     return (
     <div>
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
-        <Context.Provider value={{user:user, data:data, selectedMonth:selectedMonth, selectedItem:selectedItem, setUser:setUser, setData:setData, onAdd:handleAdd, 
-            onModify:handleModify, onDoubleClick:handleDoubleClick, 
-            onDelete:handleDelete, axiosFetchData:axiosFetchData, setSelectedMonth:setSelectedMonth}}> {/*passing data to all of the child*/}
+        <Context.Provider value={{user:user, data:data, selectedMonth:selectedMonth, selectedYear:selectedYear, selectedItem:selectedItem, total:total,
+            setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
+            onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setSelectedMonth:setSelectedMonth, setSelectedYear:setSelectedYear}}> {/*passing data to all of the child*/}
 
             <Router />
             
