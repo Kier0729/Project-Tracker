@@ -58,11 +58,12 @@ function Modify(){
                 <button onClick={()=>{
                     navigate("/Home");
                     data.onModify(modify);
-                    data.fetchYear();
+                    data.axiosFetchData();
                     }}>Save</button>
                 <button onClick={()=>{
                     navigate("/Home");
                     data.onDelete(modify.id);
+                    data.axiosFetchData();
                     }}>Delete</button>
                 <button onClick={()=>{navigate("/Home")}}>Back</button>
             </div>
