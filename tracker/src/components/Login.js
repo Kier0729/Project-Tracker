@@ -18,43 +18,51 @@ function Login(){
     }
     
     async function handleClick(event){
-    const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        if(cred.username && cred.username.length && cred.username.match(isValidEmail)){
-            event.preventDefault();
-            // document.login.submit();
-            // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
-            await axios.post(`${process.env.REACT_APP_API_URL}Login`, cred,  { withCredentials: true })
-                    .then(res=>{
-                        const {user_email, password, notFound} = res.data;
-                        // console.log(`data received:`);
-                        // console.log(res.data);
-                        if (user_email){ 
-                            data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
-                            data.setUser(res.data);
-                            data.axiosFetchData();
-                            navigate("/Home");
-                            console.log("Login Successful!");
-                        } else if(password){
-                            setCred((prev)=>{return{username:prev.username, password:""}});
-                            setplaceHold("Password Incorrect!");
-                            console.log("Password Incorrect!");
-                        } if(notFound){
-                            data.setUser(null);
-                            setCred({username:"", password:""});
-                            setplaceHold("");
-                            console.log("User not exist!");
-                            navigate("/Register");
-                        }
-                    });//
-            // navigate("/Home");
-        } else {
-            console.log("Invalid Username!");
-            setCred((prev)=>{return {username:"", password:prev.password}});
-            navigate("/");
-        }
+        // if(event.target.name == "google" || event.target.name == "facebook"){
+        //     if(event.target.name == "google"){
+        //     }
+        //     else if (event.target.name == "facebook"){
+        //         }
+        // } else {}
+            const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+            if(cred.username && cred.username.length && cred.username.match(isValidEmail)){
+                event.preventDefault();
+                // document.login.submit();
+                // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
+                await axios.post(`/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { withCredentials: true })
+                        .then(res=>{
+                            const {user_email, password, notFound} = res.data;
+                            // console.log(`data received:`);
+                            // console.log(res.data);
+                            if (user_email){ 
+                                data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
+                                data.setUser(res.data);
+                                data.axiosFetchData();
+                                navigate("/Home");
+                                console.log("Login Successful!");
+                            } else if(password){
+                                setCred((prev)=>{return{username:prev.username, password:""}});
+                                setplaceHold("Password Incorrect!");
+                                console.log("Password Incorrect!");
+                            } if(notFound){
+                                data.setUser(null);
+                                setCred({username:"", password:""});
+                                setplaceHold("");
+                                console.log("User not exist!");
+                                navigate("/Register");
+                            }
+                        });//
+                // navigate("/Home");
+            } else {
+                console.log("Invalid Username!");
+                setCred((prev)=>{return {username:"", password:prev.password}});
+                navigate("/");
+            }
     }
 
-return(<form id="login" name="login" className="login" onSubmit={handleClick} >
+return(
+    <div className="login">
+    <form id="login" name="login" className="login" onSubmit={handleClick} >
     <div>
         <input type="email" name="username" placeholder="Username" value={cred.username} onChange={handleChanged} required></input>
         <input type="password" name="password" placeholder={placeHold || "Password"} value={cred.password} onChange={handleChanged} required></input>
@@ -70,8 +78,22 @@ return(<form id="login" name="login" className="login" onSubmit={handleClick} >
                 >Register</button></Link>
             </div>        
         </div>
-    </div>
-</form>);
+        
+    </div>              
+</form>
+        <span className="vr"><label>or</label></span>
+    <div>
+        <form>
+    {/* <a href={`${process.env.REACT_APP_API_URL}auth/google`} ></a> */}
+    <button name="google" className="btn btn-lg btn-block btn-primary" style={{backgroundColor: "#dd4b39"}}
+        type="submit" formMethod="get" formAction="http://localhost:4000/auth/google"><i className="fab fa-google me-2"></i>Sign in with google</button>
+        {/* type="submit"><i className="fab fa-google me-2"></i><a href="/auth/google">Sign in with google</a></button>  */}
+    <button name="facebook" className="btn btn-lg btn-block btn-primary mb-2" style={{backgroundColor: "#3b5998"}}
+        type="submit" formMethod="get" formAction="http://localhost:4000/auth/facebook"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
+        </form>
+    </div>  
+</div>
+);
 }
 
 export default Login;

@@ -7,7 +7,7 @@ function Entry(){
     const data = useContext(Context); //passing the data received // Check in Home.js what is being pass or console.log
     // console.log(data);
 
-    const {date, merchant, amount} = data.items;//destructure the value of data.items
+    const {fname, lname, date, merchant, amount} = data.items;//destructure the value of data.items
 
 //useNavigate can only be use in a Route Components/Child
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
@@ -19,8 +19,9 @@ function Entry(){
 {/* below/here calling onDoubleClick funtion from Apps.js and pass the element that triggers the event*/}        
                 data.onDoubleClick(event);
                 navigate("/Modify"); {/* ()=> {navigate("/modify")} call navigate when doubleclick*/}
-            }}> 
-            <label name="date" >{date}</label>
+            }} style={fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
+            {fname && <label name="fname" >{fname} {lname}</label>}
+                        <label name="date" >{date}</label>
             <label name="merchant" >{merchant}</label>
             <label name="amount" >{amount}</label>
         </div>

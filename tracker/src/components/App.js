@@ -6,11 +6,12 @@ import axios from "axios";
 //naming env content starts with REACT_APP_ and no "" for the values
 
 function App(){
-const URL = process.env.REACT_APP_API_URL;
+// const URL = process.env.REACT_APP_API_URL;
 //Data received from server/api
 //////////////////////////////////////////////////////////////////
 const[data, setData] = useState([{entry_id: "", id: "", date: "", merchant: "", amount: ""}]);
 //////////////////////////////////////////////////////////////////
+const[adminData, setAdminData] = useState("");
 
 const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object}/null
 
@@ -27,7 +28,6 @@ const[selectedItem, setSelectedItem]=useState({
 //This will received the value of the element that triggers the event(check Entry.js)
 //////////////////////////////////////////////////////////////////
 
-
 const date = new Date();
 const [options, setOptions] = useState({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:date.getFullYear()})
 const [yearList, setyearList] = useState(null);
@@ -38,7 +38,7 @@ async function axiosFetchData(){
     fetchYear();
     // if(isTrue){
         try{//option should be declared as an object // { withCredentials: true } to send back cookies to server
-        await axios.post(`${process.env.REACT_APP_API_URL}fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+        await axios.post(`/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then((res) => {
             setData(res.data);
@@ -54,7 +54,7 @@ async function axiosFetchData(){
 //////////////////////////////////////////////////////////////////
 
 async function fetchYear(){
-    await axios.get(`${process.env.REACT_APP_API_URL}year`).then(
+    await axios.get(`/year`).then(
         res => {
             setyearList(res.data);
         }
@@ -68,11 +68,12 @@ useEffect(()=>{
 //   if(process){
     try{
         // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
-        await axios.get(`${URL}IsLogIn`, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+        await axios.get(`/IsLogIn`, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then(res => {
-            const {user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
-            if(user_email){
+            const {user_username, user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
+            
+            if(user_email || user_username){
                 setUser(res.data);//Update user after login success
                 axiosFetchData();//Then update data
             } else if (password){
@@ -85,21 +86,13 @@ useEffect(()=>{
     // }
   }
     fetchUser();
+    
+    
+
 //   return ()=>{
 //       process = false;//to stop executing continuously
 //   }
 },[]);
-
-//useEffect executes when the program starts
-//////////////////////////////////////////////////////////////////
-    // useEffect(()=>{
-    //     let process = true;
-    //     if(process){setSelectedMonth(month+1);}
-    //     return ()=>{
-    //         process = false;//to stop executing continuously
-    //     }
-    // },[]);
-//////////////////////////////////////////////////////////////////
 
 function handleDoubleClick(event){
     const {date:val1, merchant:val2, amount:val3} = event.target.children;
@@ -127,7 +120,7 @@ function handleDoubleClick(event){
             amount: received.amount
         }
         //if server is present
-        await axios.post(process.env.REACT_APP_API_URL, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})//postData(hence use receieved) here is not updated when this is executed
+        await axios.post("/", {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})//postData(hence use receieved) here is not updated when this is executed
         .then(res=>{
             setData(res.data);//Update the value of data
         })
@@ -151,7 +144,7 @@ function handleDoubleClick(event){
             merchant: received.merchant,
             amount: received.amount
         }
-        await axios.patch(`${process.env.REACT_APP_API_URL}update`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})
+        await axios.patch(`/update`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})
         .then(res=>{setData(res.data);})//Update the value of data
         fetchYear();
     }
@@ -169,7 +162,7 @@ function handleDoubleClick(event){
 
         //if server is present pass the id/index
         const data = {id:id, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear};
-        await axios.delete(`${process.env.REACT_APP_API_URL}delete`, {data}, {withCredentials: true})//option here should be set as an object
+        await axios.delete(`/delete`, {data}, {withCredentials: true})//option here should be set as an object
         //for axios.delete option can have an optional {headers,data(always named as data)} where data holds the body or value to be pass
         .then(res=>{setData(res.data);})//Update the value of data
     }
@@ -177,16 +170,18 @@ function handleDoubleClick(event){
     
     return (
     <div>
+        <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
         <Context.Provider value={{user:user, data:data, yearList:yearList, selectedItem:selectedItem, total:total,
-            options:options, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
+            options:options, adminData:adminData, setAdminData:setAdminData, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
             onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setyearList:setyearList}}> {/*passing data to all of the child*/}
 
             <Router />
             
         </Context.Provider>
 {/*//////////////////////////////////////////////////////////////////*/}
-            
+        </div>
+     <footer>{`©${date.getFullYear()} Kier Dalit. All rights reserved.`}</footer>       
     </div>
     );
 }

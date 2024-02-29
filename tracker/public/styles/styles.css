@@ -1,7 +1,7 @@
 
 .createEntry{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:  1fr 1fr 1fr 10%;
     gap: 5px;
     border: 2px solid black;
     border-radius: 5px;
@@ -9,6 +9,12 @@
     padding: .10rem;
     text-align: center;
     justify-items: center;
+}
+.createEntry>button{
+    grid-column-start: -1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
 .entry{
     display: grid;
@@ -35,6 +41,7 @@ when doubleclicking an entry*/
 }
 .modify input{
     height: fit-content;
+    width: 100%;
 }
 .modify div{
     display: grid;
@@ -52,18 +59,13 @@ when doubleclicking an entry*/
 .modify div label{
 text-align: center;
 }
-.createEntry>button{
-    width: fit-content;
-    grid-column-start: -1;
-    grid-column-end: 4;
-    grid-row-start: -1;
-    grid-row-end: -2;
-}
+
 .login{
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
 }
 .login>div{
     height: fit-content;
@@ -107,15 +109,31 @@ text-align: center;
 .navBar{
     /* display: flex; */
     display: grid;
-    grid-auto-flow: column;
-    justify-content: flex-end;
+    grid-auto-flow: row;
     align-items: center;
+    padding: .5rem;
     gap: .2rem;
 }
-.navBar>div{
+.logout{
+    display: grid;
+    grid-auto-flow: column;
+}
+.options{
+    display: flex;
+    gap: .25rem;
+}
+.logout>div{
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+.logout h4{
+    font-size: 1rem;
+}
+/* .navBar>div{
     position: absolute;
     justify-self: flex-start;
-}
+} */
 
 .navBar>div>h4>label{
     color: red;
@@ -126,9 +144,82 @@ text-align: center;
 .navBar label{
     width: fit-content;
 }
+
+@media (max-width: 1000px) {
+.createEntry{
+    grid-template-columns:  1fr 1fr 1fr 10%;
+}
+.createEntry>input{
+    width: 100%;
+}
+
+.navBar>h4{
+    font-size: 15px;
+}
+.navBar label{
+    font-size: 15px;
+}
+.navBar>div>h4>label{
+    font-size: 20px;
+}
+.navBar input{
+    font-size: 15px;
+}
+.navBar select{
+    font-size: 15px;
+    max-width: 6rem;
+}
+.navBar select[name="year"]{
+    max-width: 4rem;
+}
+}
 #endCycle{
     height: fit-content;
     width: 1rem;
     text-align: center;
     font-weight: bolder;
+}
+footer{
+    display: flex;
+    justify-content: center;
+    margin-top: .5rem;
+    bottom: 0;
+    font-weight: bold;
+}
+.container{
+    min-width: 780px;
+    min-height: calc(100vh - 2.5rem);
+}
+
+.vr{
+    align-self: center;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid darkgray;
+}
+.vr>label{
+    border: 1px solid darkgray;
+    padding: 5px;
+    border-radius: 50%;
+    background-color: inherit;
+    z-index: 1;
+}
+
+a{
+    color: white;
+}
+.listUser{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.listUser>div{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    border: 2px solid black;
+    border-radius: .5rem;
+    padding: 1rem;
 }

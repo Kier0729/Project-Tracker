@@ -13,9 +13,10 @@ function Home(){
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "View all"];
     
     async function handleLogout(){
-        await axios.get(`${process.env.REACT_APP_API_URL}Logout`, {withCredentials:true}).then((res)=>{
+        await axios.get(`/Logout`, {withCredentials:true}).then((res)=>{
 //waiting for api response .then to make sure that user is already logout.                
             data.setUser(res.data); //need to set to null for the Router.js condition in navigating (res.data here will be null)
+            data.setData(null);
             data.setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:date.getFullYear()});
             navigate("/");
         });
@@ -27,7 +28,7 @@ function Home(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${process.env.REACT_APP_API_URL}fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -47,7 +48,7 @@ function Home(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${process.env.REACT_APP_API_URL}fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -66,7 +67,7 @@ function Home(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${process.env.REACT_APP_API_URL}fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -86,9 +87,14 @@ function Home(){
     return(
         <div>
             <div className="navBar">
-                <div>
+                <div className="logout">
                 <h4>Total expenses: {<label>{data.total || "0.00"}</label>}</h4>
+                <div>
+                <h4>Login under: {data.user.fname} {data.user.lname}</h4> 
+                <button onClick={handleLogout}>Logout</button>
                 </div>
+                </div>
+                <div className="options">
                 <label htmlFor="endCycle">End of cycle:</label>
                 <input name="endCycle" id="endCycle" value={data.options.cycle} onChange={handleChange}></input>
                 <select name="months" value={data.options.selectedMonth || "default"} onChange={handleChange}>
@@ -105,8 +111,7 @@ function Home(){
                         return(<option key={index} value={items}>{items}</option>);
                     })}
                 </select>
-                <h4>Login under: {data.user.fname} {data.user.lname}</h4> 
-                <button onClick={handleLogout}>Logout</button>
+                </div>
             </div>
             {/* select to ONLY pass the selected data/function for practice*/}
             <Context.Provider value={{id:data.user.id, onAdd:data.onAdd, axiosFetchData:data.axiosFetchData, fetchYear:data.fetchYear}}>

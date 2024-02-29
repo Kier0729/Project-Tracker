@@ -10,7 +10,6 @@ function CreateEntry(){
     const year = date.getFullYear();
     const myContext = useContext(Context);
     
-    const [currentDate, setCurrentDate] = useState(`${day}/${month}/${year}`);
     const [displayDate, setDisplayDate] = useState(`${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}/${year}`);
     const [data, setData] = useState({entry_id: myContext.id, date:displayDate, merchant:"", amount:""});
     
@@ -29,7 +28,7 @@ function CreateEntry(){
 
     function fetchDate(isTrue){//set the currentDate if "TRUE" month + 1 January value is = 0
 //DD/MM/YY is the default formart of postgresql for date so we need to set the date to this format
-        {isTrue && (setCurrentDate(`${day}/${month+1}/${year}`))}
+        // {isTrue && (setCurrentDate(`${day}/${month+1}/${year}`))}
 //Display date will be set to MM/DD/YY        
         {isTrue && (setDisplayDate(`${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}/${year}`))}
     }

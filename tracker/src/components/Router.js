@@ -2,22 +2,39 @@ import {BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
 import Modify from "./Modify";
 import Home from "./Home";
 import Login from "./Login";
+import Admin from "./Admin";
 import Register from "./Register";
+import AdminHome from "./AdminHome";
 import React, { useContext, useEffect } from "react";
 import Context from "./Context"
 import axios from "axios";
 
 function Router(){
+    
   const data = useContext(Context);
   const user = data.user;//user in App.js need to be declare/initialize as an object {}/null
-      function Layout(){
+  const isAdmin = value();
+
+  function value(){
+    if(user){
+      if(user.admin){
+        return <Admin />;
+      } else {
+        return (<Home />);
+      }
+    } else {
+      return (<Navigate to="/"/>);
+    } 
+  }
+
+  function Layout(){
         return(
         <>
             <Outlet />
         </>
         );
     }
-
+ 
 //////////////////////////////////////////////////////////////////
 // console.log(`After: ${user}`);
   return (
@@ -27,9 +44,10 @@ function Router(){
           <Route path="/" element={<Layout />}>{/*Parent*/}
             <Route path="/" element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
             <Route path="/Register" element={<Register />}/>{/*Outlet/Child*/}
-            <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/>Outlet/Child
+            {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}
+            <Route path="/Home" element={isAdmin}/> {/*Outlet/Child*/}
             <Route path="/Modify" element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
-            {/* {console.log(user)} */}
+            <Route path="/AdminHome" element={user ? <AdminHome /> : <Login />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </BrowserRouter>
