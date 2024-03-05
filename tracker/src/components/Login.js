@@ -18,13 +18,7 @@ function Login(){
     }
     
     async function handleClick(event){
-        // if(event.target.name == "google" || event.target.name == "facebook"){
-        //     if(event.target.name == "google"){
-        //     }
-        //     else if (event.target.name == "facebook"){
-        //         }
-        // } else {}
-            const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+        const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
             if(cred.username && cred.username.length && cred.username.match(isValidEmail)){
                 event.preventDefault();
                 // document.login.submit();

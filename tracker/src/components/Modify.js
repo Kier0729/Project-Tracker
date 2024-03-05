@@ -12,6 +12,7 @@ function Modify(){
         date:data.selectedItem.date,
         merchant:data.selectedItem.merchant,
         amount:data.selectedItem.amount,
+        fname:data.selectedItem.fname,
     });
     
     function handleChange(event){
@@ -20,6 +21,7 @@ function Modify(){
             if(event.target.name==="date"){
                 return({
                     id:prev.id,
+                    fname:prev.fname,
                     date:event.target.value,
                     merchant:prev.merchant,
                     amount:prev.amount,
@@ -28,6 +30,7 @@ function Modify(){
             if(event.target.name==="merchant"){
                 return({
                     id:prev.id,
+                    fname:prev.fname,
                     date:prev.date,
                     merchant:event.target.value,
                     amount:prev.amount,
@@ -36,6 +39,7 @@ function Modify(){
             if(event.target.name==="amount"){
                 return({
                     id:prev.id,
+                    fname:prev.fname,
                     date:prev.date,
                     merchant:prev.merchant,
                     amount:event.target.value,
@@ -46,11 +50,12 @@ function Modify(){
 
     return(
         <div className="modify" >
-            <div>
+            <div style={modify.fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
+            {modify.fname && <label name="fname" >{modify.fname}</label>}
             <label>Date</label>
             <label>Merchant</label>
             <label>Amount</label>
-            <input name="date" value={modify.date} onChange={handleChange} ></input>
+            <input name="date" value={modify.date} onChange={handleChange} style={modify.fname && {gridColumnStart: `2`, gridColumnEnd: `3`}}></input>
             <input name="merchant" value={modify.merchant} onChange={handleChange} ></input>
             <input name="amount" value={modify.amount} onChange={handleChange} ></input>
             </div>
@@ -59,13 +64,15 @@ function Modify(){
                     navigate("/Home");
                     data.onModify(modify);
                     data.axiosFetchData();
+                    modify.fname && navigate("/AdminHome"); 
                     }}>Save</button>
                 <button onClick={()=>{
-                    navigate("/Home");
+                    modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     data.onDelete(modify.id);
                     data.axiosFetchData();
+                    
                     }}>Delete</button>
-                <button onClick={()=>{navigate("/Home")}}>Back</button>
+                <button onClick={()=>{modify.fname ? navigate("/AdminHome") : navigate("/Home")}}>Back</button>
             </div>
         </div>
     );

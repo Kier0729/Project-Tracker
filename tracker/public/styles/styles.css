@@ -175,7 +175,7 @@ text-align: center;
 }
 #endCycle{
     height: fit-content;
-    width: 1rem;
+    width: 2.5rem;
     text-align: center;
     font-weight: bolder;
 }
@@ -222,4 +222,8 @@ a{
     border: 2px solid black;
     border-radius: .5rem;
     padding: 1rem;
+}
+
+.adminHome{
+    padding: 2rem;
 }

@@ -59,6 +59,7 @@ function CreateEntry(){
             <button type="submit" onClick={(event)=>{
                 myContext.fetchYear();
                 myContext.onAdd(data);
+                
                 myContext.axiosFetchData();
                 setData({entry_id: `${myContext.id}`, date:"", merchant:"", amount:""});
             }}>Add</button>

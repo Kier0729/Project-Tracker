@@ -16,6 +16,9 @@ const[adminData, setAdminData] = useState("");
 const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object}/null
 
 const[total, setTotal] = useState(null);
+
+const [toNavigate, setToNavigate] = useState(false);
+
 //////////////////////////////////////////////////////////////////
 
 ////////////////Store Data received selected value//////////////////////
@@ -40,13 +43,13 @@ async function axiosFetchData(){
         try{//option should be declared as an object // { withCredentials: true } to send back cookies to server
         await axios.post(`/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
-        .then((res) => {
+        .then((res) => { 
             setData(res.data);
             let sum = 0;
             if(res.data){ res.data.map(items => {
                 sum = sum + items.amount;
             });
-            setTotal(sum); } 
+            setTotal(sum.toFixed(2)); } 
         })
     } catch(error){console.log(error.message);}
     // }
@@ -57,6 +60,8 @@ async function fetchYear(){
     await axios.get(`/year`).then(
         res => {
             setyearList(res.data);
+            console.log("SetYearList")
+            console.log(res.data);
         }
     )
 }
@@ -82,26 +87,37 @@ useEffect(()=>{
                 setUser(null);
             }        
         })
+
       } catch(error){console.log(error.message);}
     // }
   }
     fetchUser();
     
-    
 
+    // await axios.get(`fetch`, { withCredentials: true }/*, options*/)
 //   return ()=>{
 //       process = false;//to stop executing continuously
 //   }
 },[]);
 
 function handleDoubleClick(event){
-    const {date:val1, merchant:val2, amount:val3} = event.target.children;
+    const {date:val1, merchant:val2, amount:val3, fname:val4} = event.target.children;
+    
+    if(val4){
     setSelectedItem({
         id:event.target.id,
         date:val1.innerText,
         merchant:val2.innerText,
-        amount:val3.innerText
-    });
+        amount:val3.innerText,
+        fname:val4.innerText
+    });} else {
+        setSelectedItem({
+            id:event.target.id,
+            date:val1.innerText,
+            merchant:val2.innerText,
+            amount:val3.innerText,
+        }); 
+    }
 }
 //////////////////////////////////////////////////////////////////
 
@@ -173,7 +189,7 @@ function handleDoubleClick(event){
         <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
         <Context.Provider value={{user:user, data:data, yearList:yearList, selectedItem:selectedItem, total:total,
-            options:options, adminData:adminData, setAdminData:setAdminData, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
+            options:options, adminData:adminData, toNavigate:toNavigate, setToNavigate:setToNavigate, setAdminData:setAdminData, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
             onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setyearList:setyearList}}> {/*passing data to all of the child*/}
 
             <Router />

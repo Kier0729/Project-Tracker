@@ -21,7 +21,7 @@ function Entry(){
                 navigate("/Modify"); {/* ()=> {navigate("/modify")} call navigate when doubleclick*/}
             }} style={fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
             {fname && <label name="fname" >{fname} {lname}</label>}
-                        <label name="date" >{date}</label>
+            <label name="date" >{date}</label>
             <label name="merchant" >{merchant}</label>
             <label name="amount" >{amount}</label>
         </div>

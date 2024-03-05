@@ -2,22 +2,28 @@ import React, {useContext, useState, useEffect} from "react";
 import Entry from "./Entry";
 import Context from "./Context"; 
 import axios from "axios";
+import NavBar from "./NavBar";
 
 function AdminHome(){
     const data = useContext(Context);
-    const [adminData, setAdminData] = useState(data.adminData);
+    const [adminData, setAdminData] = useState("");
 
-    // useEffect(()=>{
-    //     axios.post("/updateDataAdmin", data.adminData || null, { withCredentials: true })
-    //     .then(
-    //         res =>{
-    //             console.log(res.data);
-    //         }
-    //     );  
-    // },[]);
+    async function fetchAll(){
+        await axios.get("/fetchDataAdmin",{ withCredentials: true }).then(
+            res=>{
+//not sure why if setting data.setAdminData from Apps is modified here it results in an infinite loop   
+                setAdminData(res.data);    
+            }
+        );
+    }
+
+    useEffect(()=>{
+        fetchAll();
+    },[]);
             
     return (
-        <div>
+        <div className="adminHome">
+            <NavBar />
             {
             adminData && adminData.map((items, index)=>{ //map can also pass the index //check the value of data.data
             //using Context.Provider below passing a key and value to the Entry (using spread operator ... 

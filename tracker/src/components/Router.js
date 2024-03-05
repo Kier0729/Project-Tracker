@@ -18,9 +18,9 @@ function Router(){
   function value(){
     if(user){
       if(user.admin){
-        return <Admin />;
+        return (data.selectedItem.fname ? <Navigate to="/AdminHome"/> : <Admin />);
       } else {
-        return (<Home />);
+        return <Home />;
       }
     } else {
       return (<Navigate to="/"/>);
