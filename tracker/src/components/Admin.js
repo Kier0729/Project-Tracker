@@ -3,11 +3,9 @@ import React, {useEffect, useContext, useState} from "react";
 import Context from "./Context";
 import NavBar from "./NavBar";
 
-
 function Admin(){
     const data = useContext(Context);
-    const date = new Date();
-
+    
     const[listUser, setListUser] = useState("");
     const[listId, setListId]= useState("");
 
@@ -24,19 +22,10 @@ function Admin(){
     async function fetchAll(){
         await axios.get("/fetchAdmin",{ withCredentials: true }).then(
             res=>{
-                
                 setListUser(res.data.listUser);
-                
             }
         );
     }
-    // async function fetchAdminData(){
-    //     await axios.get("/fetchDataAdmin", { withCredentials: true }).then(
-    //         res=>{
-    //             data.setAdminData(res.data);
-    //         }
-    //     );
-    // }  
 
     useEffect(()=>{
         fetchAll();

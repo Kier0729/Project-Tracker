@@ -90,7 +90,6 @@ function NavBar(){
             } catch(error){console.log(error.message);}
         }
 //////////////////////////////////////////////////////////////////////////////////
-    
     }
 
     async function handleClick(event){
