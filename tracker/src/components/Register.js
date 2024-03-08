@@ -65,7 +65,7 @@ function Register(){
                     setplaceHold(null);
                     event.preventDefault();
                     // document.register.submit();
-                    await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, {withCredentials: true})
+                    await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, {headers: data.myHeader})
                     .then(res=>{
                         data.setUser(res.data);
                         data.axiosFetchData();//Then update data

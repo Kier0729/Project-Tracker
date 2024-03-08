@@ -17,7 +17,7 @@ function Login(){
         });
     }
     async function handleFB(){
-        await axios.get(`${data.URL}/auth/facebook`, { withCredentials: true})
+        await axios.get(`${data.URL}/auth/facebook`, { headers: data.myHeader })
     }
     async function handleClick(event){
         const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -25,7 +25,7 @@ function Login(){
                 event.preventDefault();
                 // document.login.submit();
                 // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
-                await axios.post(`${data.URL}/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { withCredentials: true })
+                await axios.post(`${data.URL}/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { headers: data.myHeader })
                         .then(res=>{
                             const {user_email, password, notFound} = res.data;
                             // console.log(`data received:`);
