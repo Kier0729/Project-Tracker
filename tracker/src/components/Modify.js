@@ -55,24 +55,30 @@ function Modify(){
             <label>Date</label>
             <label>Merchant</label>
             <label>Amount</label>
-            <input name="date" value={modify.date} onChange={handleChange} style={modify.fname && {gridColumnStart: `2`, gridColumnEnd: `3`}}></input>
-            <input name="merchant" value={modify.merchant} onChange={handleChange} ></input>
-            <input name="amount" value={modify.amount} onChange={handleChange} ></input>
+            <input name="date" value={modify.date} placeholder="Please enter date:" onChange={handleChange} style={modify.fname && {gridColumnStart: `2`, gridColumnEnd: `3`}}></input>
+            <input name="merchant" value={modify.merchant} placeholder="Please enter merchant:" onChange={handleChange} ></input>
+            <input name="amount" value={modify.amount} placeholder="Please enter amount:" onChange={handleChange} ></input>
             </div>
             <div>
                 <button onClick={()=>{
-                    navigate("/Home");
-                    data.onModify(modify);
-                    data.axiosFetchData();
-                    modify.fname && navigate("/AdminHome"); 
+                    if(modify.merchant && modify.amount){
+                        navigate("/Home");
+                        data.onModify(modify);
+                        data.axiosFetchData();
+                        data.setSelectedItem("");
+                        modify.fname && navigate("/AdminHome");
+                    }
                     }}>Save</button>
                 <button onClick={()=>{
-                    modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     data.onDelete(modify.id);
                     data.axiosFetchData();
-                    
+                    data.setSelectedItem("");
+                    modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Delete</button>
-                <button onClick={()=>{modify.fname ? navigate("/AdminHome") : navigate("/Home")}}>Back</button>
+                <button onClick={()=>{
+                    data.setSelectedItem("");
+                    modify.fname ? navigate("/AdminHome") : navigate("/Home");
+                    }}>Back</button>
             </div>
         </div>
     );

@@ -16,7 +16,9 @@ function Login(){
             return(name==="username"?{username:value,password:prev.password}:{username:prev.username,password:value});
         });
     }
-    
+    async function handleFB(){
+        await axios.get(`/auth/facebook`, { withCredentials: true})
+    }
     async function handleClick(event){
         const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
             if(cred.username && cred.username.length && cred.username.match(isValidEmail)){
@@ -80,10 +82,13 @@ return(
         <form>
     {/* <a href={`${process.env.REACT_APP_API_URL}auth/google`} ></a> */}
     <button name="google" className="btn btn-lg btn-block btn-primary" style={{backgroundColor: "#dd4b39"}}
-        type="submit" formMethod="get" formAction="http://localhost:4000/auth/google"><i className="fab fa-google me-2"></i>Sign in with google</button>
-        {/* type="submit"><i className="fab fa-google me-2"></i><a href="/auth/google">Sign in with google</a></button>  */}
+        // type="submit" formMethod="get" formAction="http://localhost:4000/auth/google"><i className="fab fa-google me-2"></i>Sign in with google</button>
+        // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/google">Sign in with google</a></button>
+        type="button"><i className="fab fa-google me-2"></i><a href="https://project-tracker-server-h8ni.onrender.com/auth/google">Sign in with google</a></button>
     <button name="facebook" className="btn btn-lg btn-block btn-primary mb-2" style={{backgroundColor: "#3b5998"}}
-        type="submit" formMethod="get" formAction="http://localhost:4000/auth/facebook"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
+        // type="submit" formMethod="get" formAction="http://localhost:4000/auth/facebook"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
+        // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/facebook">Sign in with facebook</a></button>
+        type="button"><i className="fab fa-facebook-f me-2"></i><a href="https://project-tracker-server-h8ni.onrender.com/auth/facebook">Sign in with facebook</a></button>
         </form>
     </div>  
 </div>

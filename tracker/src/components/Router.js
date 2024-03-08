@@ -41,7 +41,7 @@ function Router(){
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>{/*Parent*/}
+            <Route path="/" element={<Layout />}>{/*Parent*/}
             <Route path="/" element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
             <Route path="/Register" element={<Register />}/>{/*Outlet/Child*/}
             {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}

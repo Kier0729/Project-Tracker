@@ -16,7 +16,7 @@ function Register(){
         setCred((prev)=>{
             if(name == "username"){
                 return{
-                    username: value.toLowerCase(),//set input to lowercase for email 
+                    username: value,//set input to lowercase for email 
                     password: prev.password, 
                     rePassword: prev.rePassword, 
                     fname: prev.fname, 
@@ -65,7 +65,7 @@ function Register(){
                     setplaceHold(null);
                     event.preventDefault();
                     // document.register.submit();
-                    await axios.post(`/Register`, cred, {withCredentials: true})
+                    await axios.post(`/Register`, {...cred, username:cred.username.toLowerCase()}, {withCredentials: true})
                     .then(res=>{
                         data.setUser(res.data);
                         data.axiosFetchData();//Then update data

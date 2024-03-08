@@ -21,7 +21,7 @@ function NavBar(){
 //waiting for api response .then to make sure that user is already logout.                
             data.setUser(res.data); //need to set to null for the Router.js condition in navigating (res.data here will be null)
             data.setData(null);
-            data.setAdminData(null);
+            data.setAdminData("");
             data.setyearList(null)
             data.setTotal(null);
             data.setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:date.getFullYear()});
@@ -93,10 +93,9 @@ function NavBar(){
     }
 
     async function handleClick(event){
-        data.fetchYear();
+        setTimeout( async ()=>{
+            data.fetchYear();
         //return Promise.all()
-        // CONDITION for navigate
-        let nav =  await axios.post("/updateDataAdmin", {...data.options, id:data.listId}, { withCredentials: true })
         const result = await axios.post("/updateDataAdmin", {...data.options, id:data.listId}, { withCredentials: true });
         result.data.forEach(items => {
             let sum = 0;
@@ -118,16 +117,19 @@ function NavBar(){
             navigate("/");
             data.setToNavigate(false);
         }
+        },300);
     }
 
     async function handleBack(){
+        setTimeout(async () => {
         await axios.post("/updateDataAdmin", {}, { withCredentials: true });
         data.setTotal(null);
         data.setAdminData("");
         data.setData("");
         data.setyearList(null);
         data.setToNavigate(false);
-        navigate("/");
+        navigate("/Home");
+        }, 300);
     }
 
     return(
@@ -165,8 +167,10 @@ function NavBar(){
                         return(<option key={index} value={items}>{items}</option>);
                     })}
                 </select>
-                {!data.toNavigate && <button onClick={handleClick}>View</button>}
-                {data.toNavigate && <button onClick={handleBack}>Back</button>}
+                {data.user.admin && (data.toNavigate == false && <button onClick={handleClick}>View</button>)}
+                {data.user.admin && (data.toNavigate == true && <button onClick={handleBack}>Back</button>)}
+            {/* view after modify */}
+                
                 </div>
             </div>
         </div>

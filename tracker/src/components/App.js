@@ -1,3 +1,5 @@
+//facebook login uri// google redirect
+//"proxy":"https://project-tracker-server-h8ni.onrender.com"
 import React, {useState, useEffect} from "react"
 import Context from "./Context"; //use for passing data to components/child using (Context.Provider)
 import Router from "./Router";
@@ -22,12 +24,7 @@ const [toNavigate, setToNavigate] = useState(false);
 //////////////////////////////////////////////////////////////////
 
 ////////////////Store Data received selected value//////////////////////
-const[selectedItem, setSelectedItem]=useState({
-    id:"",
-    date:"",
-    merchant:"",
-    amount:"",
-});
+const[selectedItem, setSelectedItem]=useState("");
 //This will received the value of the element that triggers the event(check Entry.js)
 //////////////////////////////////////////////////////////////////
 
@@ -61,7 +58,7 @@ async function fetchYear(){
         res => {
             setyearList(res.data);
             console.log("SetYearList")
-            console.log(res.data);
+            // console.log(res.data);
         }
     )
 }
@@ -77,7 +74,7 @@ useEffect(()=>{
         //.then(res => res.json()) axios dont need to convert json
         .then(res => {
             const {user_username, user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
-            
+            console.log(res.data);
             if(user_email || user_username){
                 setUser(res.data);//Update user after login success
                 axiosFetchData();//Then update data
@@ -131,7 +128,7 @@ function handleDoubleClick(event){
         var newDate = new Date(received.date);
         received = {
             entry_id: received.entry_id,
-            date: `${newDate.getDate()}/${newDate.getMonth()+1}/${newDate.getFullYear()}`,
+            date: `${newDate.getMonth()+1}/${newDate.getDate()}/${newDate.getFullYear()}`,
             merchant: received.merchant,
             amount: received.amount
         }
@@ -142,7 +139,6 @@ function handleDoubleClick(event){
         })
     }
 //////////////////////////////////////////////////////////////////
-
 //insert the modified data received(from Modify.js) to the selected index(received.id) using SPLICE
 //////////////////////////////////////////////////////////////////
     async function handleModify(received){
@@ -156,7 +152,8 @@ function handleDoubleClick(event){
         var newDate = new Date(received.date);
         received = {
             id: received.id,
-            date: `${newDate.getDate()}/${newDate.getMonth()+1}/${newDate.getFullYear()}`,
+            // set to format month day year
+            date: `${newDate.getMonth()+1}/${newDate.getDate()}/${newDate.getFullYear()}`,
             merchant: received.merchant,
             amount: received.amount
         }
@@ -190,7 +187,7 @@ function handleDoubleClick(event){
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
         <Context.Provider value={{user:user, data:data, yearList:yearList, selectedItem:selectedItem, total:total,
             options:options, adminData:adminData, toNavigate:toNavigate, setToNavigate:setToNavigate, setAdminData:setAdminData, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
-            onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setyearList:setyearList}}> {/*passing data to all of the child*/}
+            onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setyearList:setyearList, setSelectedItem:setSelectedItem }}> {/*passing data to all of the child*/}
 
             <Router />
             

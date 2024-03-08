@@ -11,6 +11,7 @@ function CreateEntry(){
     const myContext = useContext(Context);
     
     const [displayDate, setDisplayDate] = useState(`${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}/${year}`);
+    // const [displayDate, setDisplayDate] = useState(`${year}/${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}`);
     const [data, setData] = useState({entry_id: myContext.id, date:displayDate, merchant:"", amount:""});
     
     // console.log(myContext.onAdd); Check Home.js for the value of Context that is being pass in CreateEntry.js
@@ -31,6 +32,7 @@ function CreateEntry(){
         // {isTrue && (setCurrentDate(`${day}/${month+1}/${year}`))}
 //Display date will be set to MM/DD/YY        
         {isTrue && (setDisplayDate(`${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}/${year}`))}
+        // {isTrue && (setDisplayDate(`${year}/${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}`))}
     }
     
     function handleChange(event){
@@ -52,14 +54,13 @@ function CreateEntry(){
             <label>Amount</label>
             {/* <label>{displayDate}</label> */}
             <input type="text" name="date" value={data.date || displayDate} onChange={handleChange}></input>
-            <input type="text" name="merchant" placeholder="Merchant:" value={data.merchant} onChange={handleChange}></input>
+            <input type="text" name="merchant" placeholder="Merchant:" value={data.merchant} onChange={handleChange} required></input>
             <input type="text" name="amount" placeholder="Amount" value={data.amount} onChange={handleChange}></input>
             {/*function received from parent should be put inside a function
             so it will only execute once a click/event was triggered onClick={()=>{myContext.onAdd("Data")}} */}
             <button type="submit" onClick={(event)=>{
                 myContext.fetchYear();
-                myContext.onAdd(data);
-                
+                data.merchant && myContext.onAdd(data);
                 myContext.axiosFetchData();
                 setData({entry_id: `${myContext.id}`, date:"", merchant:"", amount:""});
             }}>Add</button>
