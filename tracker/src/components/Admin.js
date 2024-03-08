@@ -21,7 +21,7 @@ function Admin(){
         }
     }
     async function fetchAll(){
-        await axios.get("/fetchAdmin",{ withCredentials: true }).then(
+        await axios.get(`${data.URL}/fetchAdmin`,{ withCredentials: true }).then(
             res=>{
                 // console.log(res.data);
                 setListUser(res.data.listUser);
