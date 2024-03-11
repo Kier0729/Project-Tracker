@@ -136,6 +136,7 @@ function NavBar(){
         data.setTotal(null);
         data.setAdminData("");
         data.setData("");
+        data.setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:data.yearList && data.yearList[0]});
         data.setyearList(null);
         data.setToNavigate(false);
         navigate("/Home");
