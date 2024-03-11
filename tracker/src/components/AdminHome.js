@@ -6,11 +6,11 @@ import NavBar from "./NavBar";
 
 function AdminHome(){
     const data = useContext(Context);
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     const [adminData, setAdminData] = useState("");
 
     async function fetchAll(){
-        await axios.get(`${data.URL}/fetchDataAdmin`,{ headers: data.myHeader, withCredentials: true  }).then(
+        await axios.get(`${data.URL}/fetchDataAdmin`,{ withCredentials: true  }).then(
             res=>{
 //not sure why if setting data.setAdminData from Apps is modified here it results in an infinite loop   
                 setAdminData(res.data);    

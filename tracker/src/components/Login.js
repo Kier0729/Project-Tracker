@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom"; //for frontend routing//im
 import Context from "./Context";
 
 function Login(){
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
     const data = useContext(Context);
 
@@ -18,7 +18,7 @@ function Login(){
         });
     }
     async function handleFB(){
-        await axios.get(`${data.URL}/auth/facebook`, { headers: data.myHeader, withCredentials: true })
+        await axios.get(`${data.URL}/auth/facebook`, { withCredentials: true })
     }
     async function handleClick(event){
         const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -26,7 +26,7 @@ function Login(){
                 event.preventDefault();
                 // document.login.submit();
                 // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
-                await axios.post(`${data.URL}/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { headers: data.myHeader, withCredentials: true, })
+                await axios.post(`${data.URL}/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { withCredentials: true, })
                         .then(res=>{
                             const {user_email, password, notFound} = res.data;
                             // console.log(`data received:`);

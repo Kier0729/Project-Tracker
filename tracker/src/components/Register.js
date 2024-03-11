@@ -4,7 +4,7 @@ import axios from "axios";
 import Context from "./Context"
 
 function Register(){
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
     const data = useContext(Context);
 
@@ -66,7 +66,7 @@ function Register(){
                     setplaceHold(null);
                     event.preventDefault();
                     // document.register.submit();
-                    await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, {headers: data.myHeader, withCredentials: true})
+                    await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, { withCredentials: true})
                     .then(res=>{
                         data.setUser(res.data);
                         data.axiosFetchData();//Then update data

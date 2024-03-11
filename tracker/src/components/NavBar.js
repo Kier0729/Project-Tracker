@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 
 function NavBar(){
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     const data = useContext(Context);
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ function NavBar(){
         fetchYear();
     },[]);
     async function handleLogout(){
-        await axios.get(`${data.URL}/Logout`, {headers: data.myHeader, withCredentials: true}).then((res)=>{
+        await axios.get(`${data.URL}/Logout`, { withCredentials: true}).then((res)=>{
 //waiting for api response .then to make sure that user is already logout.                
             data.setUser(res.data); //need to set to null for the Router.js condition in navigating (res.data here will be null)
             data.setData(null);
@@ -46,7 +46,7 @@ function NavBar(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear}, { headers: data.myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -66,7 +66,7 @@ function NavBar(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${data.URL}/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear}, { headers: data.myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`${data.URL}/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -85,7 +85,7 @@ function NavBar(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value}, { headers: data.myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -106,7 +106,7 @@ function NavBar(){
         setTimeout( async ()=>{
             fetchYear();
         //return Promise.all()
-        const result = await axios.post(`${data.URL}/updateDataAdmin`, {...data.options, id:data.listId}, { headers: data.myHeader, withCredentials: true });
+        const result = await axios.post(`${data.URL}/updateDataAdmin`, {...data.options, id:data.listId}, { withCredentials: true });
         result.data.forEach(items => {
             let sum = 0;
             if(result.data){ result.data.map(items => {
@@ -118,7 +118,7 @@ function NavBar(){
                     return [...prev, items];
                 });
             })
-            const result2 = await axios.post(`${data.URL}/toNavigate`, {...data.options, id:data.listId}, { headers: data.myHeader, withCredentials: true });
+            const result2 = await axios.post(`${data.URL}/toNavigate`, {...data.options, id:data.listId}, { withCredentials: true });
             if(result2.data[0].length>0){
             data.setToNavigate(true);
             navigate("/AdminHome");
@@ -132,7 +132,7 @@ function NavBar(){
 
     async function handleBack(){
         setTimeout(async () => {
-        await axios.post(`${data.URL}/updateDataAdmin`, {}, { headers: data.myHeader, withCredentials: true });
+        await axios.post(`${data.URL}/updateDataAdmin`, {}, { withCredentials: true });
         data.setTotal(null);
         data.setAdminData("");
         data.setData("");

@@ -5,7 +5,7 @@ import NavBar from "./NavBar";
 
 function Admin(){
     const data = useContext(Context);
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     
     //this two and fetchAll() should be declare here(Admin.js) for avoiding infinite loop if it was called in (Apps.js)
     const[listUser, setListUser] = useState("");
@@ -22,7 +22,7 @@ function Admin(){
         }
     }
     async function fetchAll(){
-        await axios.get(`${data.URL}/fetchAdmin`,{ headers: data.myHeader, withCredentials: true  }).then(
+        await axios.get(`${data.URL}/fetchAdmin`,{ withCredentials: true  }).then(
             res=>{
                 // console.log(res.data);
                 setListUser(res.data.listUser);
