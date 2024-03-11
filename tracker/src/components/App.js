@@ -32,7 +32,7 @@ const[selectedItem, setSelectedItem]=useState("");
 
 const date = new Date();
 const [yearList, setyearList] = useState(null);
-const [options, setOptions] = useState({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:yearList[0] || date.getFullYear()})
+const [options, setOptions] = useState({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:yearList ? yearList[0] : date.getFullYear()})
 
 const myHeader = {
     // withCredentials: true,
