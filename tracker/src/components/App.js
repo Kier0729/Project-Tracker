@@ -37,7 +37,7 @@ const [yearList, setyearList] = useState(null);
 const myHeader = {
     // withCredentials: true,
     "accept ": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://project-tracker-8zss.onrender.com/",
     "Access-Control-Allow-Credentials": true,
   }
 
