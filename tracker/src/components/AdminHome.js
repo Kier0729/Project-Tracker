@@ -9,7 +9,7 @@ function AdminHome(){
     const [adminData, setAdminData] = useState("");
 
     async function fetchAll(){
-        await axios.get(`${data.URL}/fetchDataAdmin`,{ headers: data.myHeader  }).then(
+        await axios.get(`${data.URL}/fetchDataAdmin`,{ headers: data.myHeader, withCredentials: true  }).then(
             res=>{
 //not sure why if setting data.setAdminData from Apps is modified here it results in an infinite loop   
                 setAdminData(res.data);    

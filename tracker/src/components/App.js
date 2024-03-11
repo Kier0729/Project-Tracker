@@ -33,8 +33,8 @@ const [options, setOptions] = useState({cycle:7, selectedMonth:date.getMonth()+1
 const [yearList, setyearList] = useState(null);
 
 const myHeader = {
+    // withCredentials: true,
     "accept ": "application/json",
-    withCredentials: true,
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": true,
   }
@@ -45,7 +45,7 @@ async function axiosFetchData(){
     fetchYear();
     // if(isTrue){
         try{//option should be declared as an object // { withCredentials: true } to send back cookies to server
-        await axios.post(`${URL}/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, { headers: myHeader }/*, options*/) //for post/put/patch/delete request needs opstions
+        await axios.post(`${URL}/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, { headers: myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then((res) => { 
             setData(res.data);
@@ -65,7 +65,7 @@ async function fetchYear(){
         res => {
             setyearList(res.data);
             console.log("SetYearList")
-            // console.log(res.data);
+            console.log(res.data);
         }
     )
 }
@@ -77,7 +77,7 @@ useEffect(()=>{
 //   if(process){
     try{
         // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
-        await axios.get(`${URL}/IsLogIn`, { headers: myHeader  }/*, options*/) //for post/put/patch/delete request needs opstions
+        await axios.get(`${URL}/IsLogIn`, { headers: myHeader, withCredentials: true  }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then(res => {
             const {user_username, user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
@@ -182,7 +182,7 @@ function handleDoubleClick(event){
 
         //if server is present pass the id/index
         const data = {id:id, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear};
-        await axios.delete(`${URL}/delete`, {data}, {headers: myHeader })//option here should be set as an object
+        await axios.delete(`${URL}/delete`, {data}, {headers: myHeader, withCredentials: true })//option here should be set as an object
         //for axios.delete option can have an optional {headers,data(always named as data)} where data holds the body or value to be pass
         .then(res=>{setData(res.data);})//Update the value of data
     }
@@ -190,7 +190,6 @@ function handleDoubleClick(event){
     
     return (
     <div>
-        {console.log(URL)}
         <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
         <Context.Provider value={{user:user, data:data, yearList:yearList, selectedItem:selectedItem, total:total,

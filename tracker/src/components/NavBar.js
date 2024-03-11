@@ -13,11 +13,20 @@ function NavBar(){
     const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
     const [yearList, setyearList] = useState(data.yearList);
     
-    // useEffect(()=>{
-    //     fetchYear();
-    // },[]);
+    async function fetchYear(){
+        await axios.get(`${data.URL}/year`).then(
+            res => {
+                setyearList(res.data);
+                console.log("SetYearList")
+                console.log(res.data);
+            }
+        )
+    }
+    useEffect(()=>{
+        fetchYear();
+    },[]);
     async function handleLogout(){
-        await axios.get(`${data.URL}/Logout`, {headers: data.myHeader}).then((res)=>{
+        await axios.get(`${data.URL}/Logout`, {headers: data.myHeader, withCredentials: true}).then((res)=>{
 //waiting for api response .then to make sure that user is already logout.                
             data.setUser(res.data); //need to set to null for the Router.js condition in navigating (res.data here will be null)
             data.setData(null);
@@ -36,7 +45,7 @@ function NavBar(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear}, { headers: data.myHeader }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear}, { headers: data.myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -56,7 +65,7 @@ function NavBar(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${data.URL}/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear}, { headers: data.myHeader }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`${data.URL}/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear}, { headers: data.myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -75,7 +84,7 @@ function NavBar(){
             data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
             try{//option should be declared as an object
-                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value}, { headers: data.myHeader }/*, options*/) //for post/put/patch/delete request needs opstions
+                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value}, { headers: data.myHeader, withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                 //.then(res => res.json()) axios dont need to convert json
                 .then((res) => {
                     let sum = 0;
@@ -94,9 +103,9 @@ function NavBar(){
 
     async function handleClick(event){
         setTimeout( async ()=>{
-            data.fetchYear();
+            fetchYear();
         //return Promise.all()
-        const result = await axios.post(`${data.URL}/updateDataAdmin`, {...data.options, id:data.listId}, { headers: data.myHeader });
+        const result = await axios.post(`${data.URL}/updateDataAdmin`, {...data.options, id:data.listId}, { headers: data.myHeader, withCredentials: true });
         result.data.forEach(items => {
             let sum = 0;
             if(result.data){ result.data.map(items => {
@@ -108,7 +117,7 @@ function NavBar(){
                     return [...prev, items];
                 });
             })
-            const result2 = await axios.post(`${data.URL}/toNavigate`, {...data.options, id:data.listId}, { headers: data.myHeader });
+            const result2 = await axios.post(`${data.URL}/toNavigate`, {...data.options, id:data.listId}, { headers: data.myHeader, withCredentials: true });
             if(result2.data[0].length>0){
             data.setToNavigate(true);
             navigate("/AdminHome");
@@ -122,7 +131,7 @@ function NavBar(){
 
     async function handleBack(){
         setTimeout(async () => {
-        await axios.post(`${data.URL}/updateDataAdmin`, {}, { headers: data.myHeader });
+        await axios.post(`${data.URL}/updateDataAdmin`, {}, { headers: data.myHeader, withCredentials: true });
         data.setTotal(null);
         data.setAdminData("");
         data.setData("");
