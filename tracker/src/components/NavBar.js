@@ -171,7 +171,7 @@ function NavBar(){
                     })}
                 </select>
 
-                <select name="year" value={data.options.selectedYear || "default"} onChange={handleChange}>
+                <select name="year" value={data.options.selectedYear || yearList ? yearList[0] : "default"} onChange={handleChange}>
                     <option value="default" disabled hidden>Select a Year</option>
                     
                     {yearList && yearList.map((items, index)=>{
