@@ -20,10 +20,10 @@ function Entry(){
                 data.onDoubleClick(event);
                 navigate("/Modify"); {/* ()=> {navigate("/modify")} call navigate when doubleclick*/}
             }} style={fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
-            {fname && <label name="fname" >{fname} {lname}</label>}
-            <label name="date" >{date}</label>
-            <label name="merchant" >{merchant}</label>
-            <label name="amount" >{amount}</label>
+            {fname && <button name="fname" >{fname} {lname}</button>}
+            <button name="date" >{date}</button>
+            <button name="merchant" >{merchant}</button>
+            <button name="amount" >{amount}</button>
         </div>
 
     );

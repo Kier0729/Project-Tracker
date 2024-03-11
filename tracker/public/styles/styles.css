@@ -28,7 +28,7 @@
 
 /* To set div to display at top so when the user click it will click the div instead of the label 
 when doubleclicking an entry*/
-.entry label{
+.entry button{
     z-index: -1;
 }
 .modify{
