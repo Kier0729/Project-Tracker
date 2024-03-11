@@ -4,6 +4,7 @@ import axios from "axios";
 import Context from "./Context"
 
 function Register(){
+    axios.defaults.withCredentials = true;
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
     const data = useContext(Context);
 

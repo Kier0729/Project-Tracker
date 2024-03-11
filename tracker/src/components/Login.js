@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom"; //for frontend routing//im
 import Context from "./Context";
 
 function Login(){
+    axios.defaults.withCredentials = true;
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
     const data = useContext(Context);
 

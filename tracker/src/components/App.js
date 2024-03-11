@@ -8,6 +8,7 @@ import axios from "axios";
 //naming env content starts with REACT_APP_ and no "" for the values
 
 function App(){
+axios.defaults.withCredentials = true;
 const URL = process.env.REACT_APP_API_URL;
 //Data received from server/api
 //////////////////////////////////////////////////////////////////
@@ -20,6 +21,7 @@ const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {
 const[total, setTotal] = useState(null);
 
 const [toNavigate, setToNavigate] = useState(false);
+
 
 //////////////////////////////////////////////////////////////////
 

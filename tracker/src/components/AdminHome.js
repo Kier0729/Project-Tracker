@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 
 function AdminHome(){
     const data = useContext(Context);
+    axios.defaults.withCredentials = true;
     const [adminData, setAdminData] = useState("");
 
     async function fetchAll(){

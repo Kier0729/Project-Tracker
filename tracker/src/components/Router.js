@@ -7,7 +7,6 @@ import Register from "./Register";
 import AdminHome from "./AdminHome";
 import React, { useContext, useEffect } from "react";
 import Context from "./Context"
-import axios from "axios";
 
 function Router(){
     

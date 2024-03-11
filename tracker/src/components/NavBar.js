@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 
 function NavBar(){
+    axios.defaults.withCredentials = true;
     const data = useContext(Context);
     const navigate = useNavigate();
 
