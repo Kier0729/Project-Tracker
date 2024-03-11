@@ -40,13 +40,13 @@ function Router(){
     <div className="App">
       <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Layout />}>{/*Parent*/}
-            <Route path="/" element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
-            <Route path="/Register" element={<Register />}/>{/*Outlet/Child*/}
+            <Route path={`${process.env.REACT_APP_URL}/`} element={<Layout />}>{/*Parent*/}
+            <Route path={`${process.env.REACT_APP_URL}/`} element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
+            <Route path={`${process.env.REACT_APP_URL}/Register`} element={<Register />}/>{/*Outlet/Child*/}
             {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}
-            <Route path="/Home" element={isAdmin}/> {/*Outlet/Child*/}
-            <Route path="/Modify" element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
-            <Route path="/AdminHome" element={user ? <AdminHome /> : <Login />} />{/*Outlet/Child*/}
+            <Route path={`${process.env.REACT_APP_URL}/Home`} element={isAdmin}/> {/*Outlet/Child*/}
+            <Route path={`${process.env.REACT_APP_URL}/Modify`} element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
+            <Route path={`${process.env.REACT_APP_URL}/AdminHome`} element={user ? <AdminHome /> : <Login />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </BrowserRouter>
