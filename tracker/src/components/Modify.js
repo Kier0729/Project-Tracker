@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 //below imports is use to accept/received data from the parent components
 import Context from "./Context"
 import { useNavigate } from "react-router-dom"; //for frontend routing//import useNavigate
-import Router from "./Router";
 
 function Modify(){
     const data = useContext(Context); //passing the data received
@@ -51,9 +50,6 @@ function Modify(){
 
     return(
         <div className="modify" >
-            <Context.Provider value={{modify:modify}}>
-                <Router />
-            </Context.Provider>
             <div style={modify.fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
             {modify.fname && <label name="fname" >{modify.fname}</label>}
             <label>Date</label>
