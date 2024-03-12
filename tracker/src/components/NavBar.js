@@ -18,8 +18,8 @@ function NavBar(){
         await axios.get(`${data.URL}/year`).then(
             res => {
                 setyearList(res.data);
-                console.log("SetYearList")
-                console.log(res.data);
+                // console.log("SetYearList")
+                // console.log(res.data);
             }
         )
     }

@@ -83,8 +83,9 @@ useEffect(()=>{
         //.then(res => res.json()) axios dont need to convert json
         .then(res => {
             const {user_username, user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
-            console.log(res.data);
+            // console.log(res.data);
             if(user_email || user_username){
+                console.log("Userdata received!");
                 setUser(res.data);//Update user after login success
                 axiosFetchData();//Then update data
             } else if (password){
