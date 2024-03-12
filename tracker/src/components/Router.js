@@ -55,8 +55,8 @@ basename="/something"
             <Route path={`/Register`} element={<Register />}/>{/*Outlet/Child*/}
             {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}
             <Route path={`/Home`} element={isAdmin}/> {/*Outlet/Child*/}
-            <Route path={`/Modify`} element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
-            <Route path={`/AdminHome`} element={user ? <AdminHome /> : <Login />} />{/*Outlet/Child*/}
+            <Route path={`/Modify`} element={data.selectedItem ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
+            <Route path={`/AdminHome`} element={user.admin ? <AdminHome /> : <Navigate to="/" />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </HashRouter>
