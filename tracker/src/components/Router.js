@@ -48,6 +48,7 @@ basename="/something"
 <HashRouter hastype="hashbang" basename="/something">*/
   return (
     <div className="App">
+      {console.log(data.modify)}
       <HashRouter>
         <Routes>
             <Route path={`/`} element={<Layout />}>{/*Parent*/}
