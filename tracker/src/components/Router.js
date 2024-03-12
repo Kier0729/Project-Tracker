@@ -1,4 +1,5 @@
-import {BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom"; //for frontend routing
+import {HashRouter, Routes, Route, Outlet, Navigate} from "react-router-dom"; //for frontend routing
+//BrowserRouter
 import Modify from "./Modify";
 import Home from "./Home";
 import Login from "./Login";
@@ -36,21 +37,29 @@ function Router(){
  
 //////////////////////////////////////////////////////////////////
 // console.log(`After: ${user}`);
+
+/* HashRouter
+hastype
+default slash /#/ /#/Home
+        noslah /# /#Home
+       hashbang /#!/ /#!/Home
+
+basename="/something" 
+<HashRouter hastype="hashbang" basename="/something">*/
   return (
     <div className="App">
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
             <Route path={`/`} element={<Layout />}>{/*Parent*/}
             <Route path={`/`} element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
             <Route path={`/Register`} element={<Register />}/>{/*Outlet/Child*/}
             {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}
             <Route path={`/Home`} element={isAdmin}/> {/*Outlet/Child*/}
-            <Route path={`project-tracker-8zss.onrender.com/Home`} element={isAdmin}/> {/*Outlet/Child*/}
             <Route path={`/Modify`} element={user ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
             <Route path={`/AdminHome`} element={user ? <AdminHome /> : <Login />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
-    </BrowserRouter>
+    </HashRouter>
     </div>
   );
 }
