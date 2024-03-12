@@ -34,7 +34,7 @@ function NavBar(){
             data.setAdminData("");
             data.setyearList(null)
             data.setTotal(null);
-            data.setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:date.getFullYear()});
+            data.setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:data.yearList && data.yearList[0]});
             navigate("/");
         });
     }
