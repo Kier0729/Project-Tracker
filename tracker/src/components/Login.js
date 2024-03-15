@@ -7,7 +7,6 @@ function Login(){
     // axios.defaults.withCredentials = true;
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
     const data = useContext(Context);
-
     const[cred, setCred] = useState({username:"", password:""});
     const[placeHold, setplaceHold] = useState(null);
 
@@ -17,9 +16,7 @@ function Login(){
             return(name==="username"?{username:value,password:prev.password}:{username:prev.username,password:value});
         });
     }
-    async function handleFB(){
-        await axios.get(`${data.URL}/auth/facebook`, { withCredentials: true })
-    }
+
     async function handleClick(event){
         const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
             if(cred.username && cred.username.length && cred.username.match(isValidEmail)){
@@ -29,11 +26,10 @@ function Login(){
                 await axios.post(`${data.URL}/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { withCredentials: true, })
                         .then(res=>{
                             const {user_email, password, notFound} = res.data;
-                            // console.log(`data received:`);
-                            // console.log(res.data);
                             if (user_email){ 
-                                data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
                                 data.setUser(res.data);
+                                // data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
+                                data.fetchUser();
                                 data.axiosFetchData();
                                 navigate("/Home");
                                 console.log("Login Successful!");
@@ -85,11 +81,11 @@ return(
     <button name="google" className="btn btn-lg btn-block btn-primary" style={{backgroundColor: "#dd4b39"}}
         // type="submit" formMethod="get" formAction="http://localhost:4000/auth/google"><i className="fab fa-google me-2"></i>Sign in with google</button>
         // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/google">Sign in with google</a></button>
-        type="button"><i className="fab fa-google me-2"></i><a href="https://project-tracker-server-h8ni.onrender.com/auth/google">Sign in with google</a></button>
+        type="button"><i className="fab fa-google me-2"></i><a href={`${process.env.REACT_APP_API_URL}/auth/google`}>Sign in with google</a></button>
     <button name="facebook" className="btn btn-lg btn-block btn-primary mb-2" style={{backgroundColor: "#3b5998"}}
         // type="submit" formMethod="get" formAction="http://localhost:4000/auth/facebook"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
         // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/facebook">Sign in with facebook</a></button>
-        type="button"><i className="fab fa-facebook-f me-2"></i><a href="https://project-tracker-server-h8ni.onrender.com/auth/facebook">Sign in with facebook</a></button>
+        type="button"><i className="fab fa-facebook-f me-2"></i><a href={`${process.env.REACT_APP_API_URL}/auth/facebook`}>Sign in with facebook</a></button>
         </form>
     </div>  
 </div>

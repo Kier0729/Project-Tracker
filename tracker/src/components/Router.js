@@ -10,20 +10,27 @@ import React, { useContext, useEffect } from "react";
 import Context from "./Context"
 
 function Router(){
-    
   const data = useContext(Context);
   const user = data.user;//user in App.js need to be declare/initialize as an object {}/null
   const isAdmin = value();
+  const isAdmin2 = value2();
 
   function value(){
     if(user){
       if(user.admin){
-        return (data.selectedItem.fname ? <Navigate to="/AdminHome"/> : <Admin />);
+        return (data.toNavigate ? <AdminHome /> : <Admin />);
       } else {
         return <Home />;
       }
     } else {
-      return (<Navigate to="/"/>);
+      return <Navigate to="/"/>;
+    } 
+  }
+  function value2(){
+    if(data.toNavigate){
+        return <AdminHome />;
+    } else {
+      return <Navigate to="/"/>;
     } 
   }
 
@@ -36,16 +43,7 @@ function Router(){
     }
  
 //////////////////////////////////////////////////////////////////
-// console.log(`After: ${user}`);
 
-/* HashRouter
-hastype
-default slash /#/ /#/Home
-        noslah /# /#Home
-       hashbang /#!/ /#!/Home
-
-basename="/something" 
-<HashRouter hastype="hashbang" basename="/something">*/
   return (
     <div className="App">
       <HashRouter>
@@ -56,7 +54,7 @@ basename="/something"
             {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}
             <Route path={`/Home`} element={isAdmin}/> {/*Outlet/Child*/}
             <Route path={`/Modify`} element={data.selectedItem ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
-            <Route path={`/AdminHome`} element={user ? user.admin ? <AdminHome /> : <Navigate to="/" /> : <Navigate to="/" />} />{/*Outlet/Child*/}
+            <Route path={`/AdminHome`} element={isAdmin2} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </HashRouter>

@@ -16,7 +16,6 @@ function Modify(){
     });
     
     function handleChange(event){
-        // console.log(event.target.value);
         setModify((prev)=>{
             if(event.target.name==="date"){
                 return({
@@ -64,18 +63,22 @@ function Modify(){
                     if(modify.merchant && modify.amount){
                         navigate("/Home");
                         data.onModify(modify);
-                        data.axiosFetchData();
+                        data.fetchUser();
+                        // data.axiosFetchData();
                         data.setSelectedItem("");
                         modify.fname && navigate("/AdminHome");
                     }
                     }}>Save</button>
                 <button onClick={()=>{
                     data.onDelete(modify.id);
-                    data.axiosFetchData();
+                    data.fetchUser();
+                    // data.axiosFetchData();
                     data.setSelectedItem("");
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Delete</button>
                 <button onClick={()=>{
+                    data.fetchUser();
+                    // data.axiosFetchData();
                     data.setSelectedItem("");
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Back</button>

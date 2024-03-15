@@ -175,10 +175,8 @@ text-align: center;
 }
 }
 #endCycle{
-    height: fit-content;
     width: 2.5rem;
-    text-align: center;
-    font-weight: bolder;
+    text-align: center;   
 }
 footer{
     display: flex;

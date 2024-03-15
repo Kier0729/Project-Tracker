@@ -69,8 +69,7 @@ function Register(){
                     await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, { withCredentials: true})
                     .then(res=>{
                         data.setUser(res.data);
-                        data.axiosFetchData();//Then update data
-                        // console.log(res.data);
+                        // data.axiosFetchData();//Then update data
                         res.data ? navigate("/Home") : navigate("/");
                     });//
                 } else {

@@ -14,15 +14,9 @@ const URL = process.env.REACT_APP_API_URL;
 //////////////////////////////////////////////////////////////////
 const[data, setData] = useState([{entry_id: "", id: "", date: "", merchant: "", amount: ""}]);
 //////////////////////////////////////////////////////////////////
-const[adminData, setAdminData] = useState("");
-
-const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object}/null
-
+const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object} or null
 const[total, setTotal] = useState(null);
-
 const [toNavigate, setToNavigate] = useState(false);
-
-
 //////////////////////////////////////////////////////////////////
 
 ////////////////Store Data received selected value//////////////////////
@@ -32,30 +26,29 @@ const[selectedItem, setSelectedItem]=useState("");
 
 const date = new Date();
 const [yearList, setyearList] = useState(null);
-const [options, setOptions] = useState({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:yearList && yearList[0]})
+const [options, setOptions] = useState({cycle:null, selectedMonth:null, selectedYear:null})
 
-const myHeader = {
-    // withCredentials: true,
-    "accept ": "application/json",
-    "Access-Control-Allow-Origin": "https://project-tracker-8zss.onrender.com/",
-    "Access-Control-Allow-Credentials": true,
-  }
+// const myHeader = {
+//     // withCredentials: true,
+//     "accept ": "application/json",
+//     "Access-Control-Allow-Origin": "https://project-tracker-8zss.onrender.com/",
+//     "Access-Control-Allow-Credentials": true,
+//   }
 
 //use for http request to api/server fetching data
 //////////////////////////////////////////////////////////////////
 async function axiosFetchData(){
-    fetchYear();
     // if(isTrue){
         try{//option should be declared as an object // { withCredentials: true } to send back cookies to server //headers: myHeader,
-        await axios.post(`${URL}/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+        await axios.post(`${URL}/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear, toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then((res) => { 
             setData(res.data);
-            let sum = 0;
-            if(res.data){ res.data.map(items => {
-                sum = sum + items.amount;
-            });
-            setTotal(sum.toFixed(2)); } 
+            // let sum = 0;
+            // if(res.data){ res.data.map(items => {
+            //     sum = sum + items.amount;
+            // });
+            // setTotal(sum.toFixed(2)); } 
         })
     } catch(error){console.log(error.message);}
     // }
@@ -66,15 +59,55 @@ async function fetchYear(){
     await axios.get(`${URL}/year`).then(
         res => {
             setyearList(res.data);
-            console.log("SetYearList")
-            console.log(res.data);
         }
     )
 }
 
-useEffect(()=>{
-//   let process = true;
-  async function fetchUser(){
+async function fetchOption(){
+    await axios.get(`${process.env.REACT_APP_API_URL}/fetchOption`).then(
+        async res=>{
+            if (res.data.month && res.data.year){
+                const result = await axios.get(`${URL}/year`);
+                const match = result.data.filter(items=>{
+                    return items == res.data.year;
+                })
+//condition to set setOptions if the previous options for navbar from server will be restore or set the year to the /year return data[0]
+                match.length > 0 ? setOptions({cycle:res.data.cycle, selectedMonth:res.data.month, selectedYear:res.data.year})
+                : setOptions({cycle:res.data.cycle, selectedMonth:res.data.month, selectedYear:result.data[0]});
+            }
+            if(!res.data.cycle && !res.data.month && !res.data.year){
+                const result = await axios.get(`${URL}/year`);
+                setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:result.data[0]});
+            }
+        }
+    )
+}
+
+//modification for deleted data
+async function fetchAdminOption(){
+    await axios.get(`${URL}/fetchDataAdmin`, { withCredentials: true  }).then(
+        async res=>{
+            console.log(res.data);
+            // res.data.adminOption.toNavigate && setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year});
+            res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
+
+            if (res.data.adminOption.month && res.data.adminOption.year){
+                const result = await axios.get(`${URL}/year`);
+                const match = result.data.filter(items=>{
+                    return items == res.data.adminOption.year;
+                })
+                
+                res.data.adminOption.toNavigate && match.length > 0 ? setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year})
+                : setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0][0]});
+                console.log(`adminoption year:${res.data.adminOption.year}`);
+                console.log(`yearlist: ${result.data[0]}`);
+                console.log(`match: ${match}`);
+                console.log(options);
+            }
+        })
+}
+
+async function fetchUser(){
     console.log("fetchInitiate");
 //   if(process){
     try{
@@ -82,26 +115,26 @@ useEffect(()=>{
         await axios.get(`${URL}/IsLogIn`, { withCredentials: true  }/*, options*/) //for post/put/patch/delete request needs opstions
         //.then(res => res.json()) axios dont need to convert json
         .then(res => {
-            const {user_username, user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
-            // console.log(res.data);
+            const {admin, user_username, user_email, password, notFound} = res.data;//Need to initialize to be able to user in IF(statement)
             if(user_email || user_username){
                 console.log("Userdata received!");
                 setUser(res.data);//Update user after login success
-                axiosFetchData();//Then update data
+                fetchYear();
+                admin && fetchAdminOption();
+                admin == null && fetchOption();
             } else if (password){
                 setUser(null);
             } else if (notFound){
                 setUser(null);
             }        
         })
-
-      } catch(error){console.log(error.message);}
+    } catch(error){console.log(error.message);}
     // }
   }
-    fetchUser();
-    
 
-    // await axios.get(`fetch`, { withCredentials: true }/*, options*/)
+useEffect(()=>{
+//   let process = true;  
+    fetchUser();
 //   return ()=>{
 //       process = false;//to stop executing continuously
 //   }
@@ -168,7 +201,9 @@ function handleDoubleClick(event){
             amount: received.amount
         }
         await axios.patch(`${URL}/update`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})
-        .then(res=>{setData(res.data);})//Update the value of data
+        .then(res=>{
+            console.log(res.data);
+        })//Update the value of data
         fetchYear();
     }
 //////////////////////////////////////////////////////////////////
@@ -196,7 +231,7 @@ function handleDoubleClick(event){
         <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
         <Context.Provider value={{user:user, data:data, yearList:yearList, selectedItem:selectedItem, total:total,
-            options:options, adminData:adminData, toNavigate:toNavigate, URL:URL, myHeader:myHeader, setToNavigate:setToNavigate, setAdminData:setAdminData, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
+            options:options, toNavigate:toNavigate, URL:URL, fetchUser:fetchUser, setToNavigate:setToNavigate, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
             onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setyearList:setyearList, setSelectedItem:setSelectedItem }}> {/*passing data to all of the child*/}
 
             <Router />

@@ -14,7 +14,7 @@ function CreateEntry(){
     // const [displayDate, setDisplayDate] = useState(`${year}/${month+1<10?`0${month+1}`:month+1}/${day<10?`0${day}`:day}`);
     const [data, setData] = useState({entry_id: myContext.id, date:displayDate, merchant:"", amount:""});
     
-    // console.log(myContext.onAdd); Check Home.js for the value of Context that is being pass in CreateEntry.js
+//Check Home.js for the value of Context that is being pass in CreateEntry.js
     useEffect(()=>{
         let process = true;
         fetchDate(process);//executing/calling fetchDate and passing the process as true
@@ -22,10 +22,6 @@ function CreateEntry(){
             process = false;//to stop executing continuously
         }
     },[]);
-
-    // setTimeout(() => {
-        
-    // }, 1000);
 
     function fetchDate(isTrue){//set the currentDate if "TRUE" month + 1 January value is = 0
 //DD/MM/YY is the default formart of postgresql for date so we need to set the date to this format
@@ -38,7 +34,6 @@ function CreateEntry(){
     function handleChange(event){
         const{value, name} = event.target; //destructure the value of event{event is an object} and create a variable 
         //for (event.target.name and event.target.value)
-
             setData((prev)=>{//pass the prev value of data
                 //return an object base below to be use in setData() above
                 if (name === "merchant"){return {entry_id:prev.entry_id, date:prev.date, merchant:value, amount:prev.amount}}
@@ -59,9 +54,9 @@ function CreateEntry(){
             {/*function received from parent should be put inside a function
             so it will only execute once a click/event was triggered onClick={()=>{myContext.onAdd("Data")}} */}
             <button type="submit" onClick={(event)=>{
-                myContext.fetchYear();
+                // myContext.fetchYear();
                 data.merchant && myContext.onAdd(data);
-                myContext.axiosFetchData();
+                // myContext.axiosFetchData();
                 setData({entry_id: `${myContext.id}`, date:"", merchant:"", amount:""});
             }}>Add</button>
         </div>
