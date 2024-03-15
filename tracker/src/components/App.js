@@ -66,16 +66,18 @@ async function fetchYear(){
 async function fetchOption(){
     await axios.get(`${process.env.REACT_APP_API_URL}/fetchOption`).then(
         async res=>{
-            if (res.data.month && res.data.year){
+            console.log(res.data);
+                res.data.selectedItem && setSelectedItem(res.data.selectedItem.modify);
+            if (res.data.clientOption.month && res.data.clientOption.year){
                 const result = await axios.get(`${URL}/year`);
                 const match = result.data.filter(items=>{
-                    return items == res.data.year;
+                    return items == res.data.clientOption.year;
                 })
 //condition to set setOptions if the previous options for navbar from server will be restore or set the year to the /year return data[0]
-                match.length > 0 ? setOptions({cycle:res.data.cycle, selectedMonth:res.data.month, selectedYear:res.data.year})
-                : setOptions({cycle:res.data.cycle, selectedMonth:res.data.month, selectedYear:result.data[0]});
+                match.length > 0 ? setOptions({cycle:res.data.clientOption.cycle, selectedMonth:res.data.clientOption.month, selectedYear:res.data.clientOption.year})
+                : setOptions({cycle:res.data.clientOption.cycle, selectedMonth:res.data.clientOption.month, selectedYear:result.data[0]});
             }
-            if(!res.data.cycle && !res.data.month && !res.data.year){
+            if(!res.data.clientOption.cycle && !res.data.clientOption.month && !res.data.clientOption.year){
                 const result = await axios.get(`${URL}/year`);
                 setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:result.data[0]});
             }

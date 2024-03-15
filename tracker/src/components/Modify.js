@@ -1,7 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 //below imports is use to accept/received data from the parent components
 import Context from "./Context"
 import { useNavigate } from "react-router-dom"; //for frontend routing//import useNavigate
+import axios from "axios";
 
 function Modify(){
     const data = useContext(Context); //passing the data received
@@ -14,6 +15,18 @@ function Modify(){
         amount:data.selectedItem.amount,
         fname:data.selectedItem.fname,
     });
+
+    function postSelectedItem(){
+        axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {}, { withCredentials: true }/*, options*/);    
+    }
+
+    useEffect(()=>{
+        // setTimeout(()=>{
+        console.log(modify);
+        axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {modify}, { withCredentials: true }/*, options*/);    
+
+            // }, 500);
+    },[]);
     
     function handleChange(event){
         setModify((prev)=>{
@@ -65,6 +78,7 @@ function Modify(){
                         !data.user.admin && data.fetchUser();
                         data.user.admin && data.fetchAdminOption();
                         data.setSelectedItem("");
+                        postSelectedItem();
                         modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }
                     }}>Save</button>
@@ -73,11 +87,13 @@ function Modify(){
                     !data.user.admin && data.fetchUser();
                     data.user.admin && data.fetchAdminOption();
                     data.setSelectedItem("");
+                    postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Delete</button>
                 <button onClick={()=>{
                     !data.user.admin && data.fetchUser();
                     data.setSelectedItem("");
+                    postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Back</button>
             </div>

@@ -48,12 +48,13 @@ function Router(){
     <div className="App">
       <HashRouter>
         <Routes>
+          {console.log(data.selectedItem)}
             <Route path={`/`} element={<Layout />}>{/*Parent*/}
             <Route path={`/`} element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
             <Route path={`/Register`} element={<Register />}/>{/*Outlet/Child*/}
             {/* <Route path="/Home" element={user ? <Home /> : <Navigate to="/" />}/> Outlet/Child */}
             <Route path={`/Home`} element={isAdmin}/> {/*Outlet/Child*/}
-            <Route path={`/Modify`} element={data.selectedItem ? <Modify /> : <Navigate to="/" />}/>{/*Outlet/Child*/}
+            <Route path={`/Modify`} element={data.selectedItem && <Modify />}/>{/*Outlet/Child*/}
             <Route path={`/AdminHome`} element={isAdmin2} />{/*Outlet/Child*/}
           </Route>
         </Routes>
