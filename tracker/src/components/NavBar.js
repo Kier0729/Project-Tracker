@@ -110,7 +110,7 @@ function NavBar(){
             if(result2.data[0].length>0){
             data.setToNavigate(true);
 
-        const result = await axios.post(`${data.URL}/updateDataAdmin`, {...data.options, id:data.listId, toNavigate:true}, { withCredentials: true });
+        const result = await axios.post(`${data.URL}/postFetchAdminData&Option`, {...data.options, id:data.listId, toNavigate:true}, { withCredentials: true });
             result.data.forEach(items => {
             let sum = 0;
             if(result.data){ 
@@ -133,7 +133,7 @@ function NavBar(){
 
     async function handleBack(){
         setTimeout(async () => {
-        await axios.post(`${data.URL}/updateDataAdmin`, {}, { withCredentials: true });
+        await axios.post(`${data.URL}/postFetchAdminData&Option`, {}, { withCredentials: true });
         data.setTotal(null);
         data.setData("");
         data.setOptions({cycle:null, selectedMonth:null, selectedYear:null});

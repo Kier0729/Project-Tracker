@@ -12,7 +12,7 @@ function App(){
 const URL = process.env.REACT_APP_API_URL;
 //Data received from server/api
 //////////////////////////////////////////////////////////////////
-const[data, setData] = useState([{entry_id: "", id: "", date: "", merchant: "", amount: ""}]);
+const[data, setData] = useState("");
 //////////////////////////////////////////////////////////////////
 const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object} or null
 const[total, setTotal] = useState(null);
@@ -85,7 +85,7 @@ async function fetchOption(){
 
 //modification for deleted data
 async function fetchAdminOption(){
-    await axios.get(`${URL}/fetchDataAdmin`, { withCredentials: true  }).then(
+    await axios.get(`${URL}/fetchAdminOption`, { withCredentials: true  }).then(
         async res=>{
             console.log(res.data);
             // res.data.adminOption.toNavigate && setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year});
@@ -178,7 +178,9 @@ function handleDoubleClick(event){
         //if server is present
         await axios.post(`${URL}/`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})//postData(hence use receieved) here is not updated when this is executed
         .then(res=>{
-            setData(res.data);//Update the value of data
+            console.log(res.data);
+            // setData(res.data);// need to update something here to make the screen to reupdate
+            fetchYear();//instead of updating data which have no use update year to trigger an update to app.js
         })
     }
 //////////////////////////////////////////////////////////////////
@@ -203,8 +205,7 @@ function handleDoubleClick(event){
         await axios.patch(`${URL}/update`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})
         .then(res=>{
             console.log(res.data);
-        })//Update the value of data
-        fetchYear();
+        })
     }
 //////////////////////////////////////////////////////////////////
 
@@ -222,7 +223,9 @@ function handleDoubleClick(event){
         const data = {id:id, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear};
         await axios.delete(`${URL}/delete`, {data}, { withCredentials: true })//option here should be set as an object
         //for axios.delete option can have an optional {headers,data(always named as data)} where data holds the body or value to be pass
-        .then(res=>{setData(res.data);})//Update the value of data
+        .then(res=>{
+            console.log(res.data);
+        })//Update the value of data
     }
 //////////////////////////////////////////////////////////////////
     

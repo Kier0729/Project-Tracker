@@ -50,13 +50,11 @@ function CreateEntry(){
             {/* <label>{displayDate}</label> */}
             <input type="text" name="date" value={data.date || displayDate} onChange={handleChange}></input>
             <input type="text" name="merchant" placeholder="Merchant:" value={data.merchant} onChange={handleChange} required></input>
-            <input type="text" name="amount" placeholder="Amount" value={data.amount} onChange={handleChange}></input>
+            <input type="text" name="amount" placeholder="Amount" value={data.amount} onChange={handleChange} required></input>
             {/*function received from parent should be put inside a function
             so it will only execute once a click/event was triggered onClick={()=>{myContext.onAdd("Data")}} */}
             <button type="submit" onClick={(event)=>{
-                // myContext.fetchYear();
-                data.merchant && myContext.onAdd(data);
-                // myContext.axiosFetchData();
+                data.merchant && data.amount && myContext.onAdd(data);
                 setData({entry_id: `${myContext.id}`, date:"", merchant:"", amount:""});
             }}>Add</button>
         </div>

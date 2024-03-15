@@ -61,12 +61,11 @@ function Modify(){
             <div>
                 <button onClick={()=>{
                     if(modify.merchant && modify.amount){
-                        navigate("/Home");
                         data.onModify(modify);
                         data.fetchUser();
                         // data.axiosFetchData();
                         data.setSelectedItem("");
-                        modify.fname && navigate("/AdminHome");
+                        modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }
                     }}>Save</button>
                 <button onClick={()=>{

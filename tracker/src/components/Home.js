@@ -7,7 +7,7 @@ import axios from "axios";
 
 function Home(){
     const data = useContext(Context); //passing the data received to a const data
-    const [clientData, setClientData] = useState(data.data);
+    const [clientData, setClientData] = useState("");
 
     async function fetchClientData(){
         console.log("fetchClientData");
