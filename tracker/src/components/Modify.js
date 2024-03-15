@@ -62,22 +62,21 @@ function Modify(){
                 <button onClick={()=>{
                     if(modify.merchant && modify.amount){
                         data.onModify(modify);
-                        data.fetchUser();
-                        // data.axiosFetchData();
+                        !data.user.admin && data.fetchUser();
+                        data.user.admin && data.fetchAdminOption();
                         data.setSelectedItem("");
                         modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }
                     }}>Save</button>
                 <button onClick={()=>{
                     data.onDelete(modify.id);
-                    data.fetchUser();
-                    // data.axiosFetchData();
+                    !data.user.admin && data.fetchUser();
+                    data.user.admin && data.fetchAdminOption();
                     data.setSelectedItem("");
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Delete</button>
                 <button onClick={()=>{
-                    data.fetchUser();
-                    // data.axiosFetchData();
+                    !data.user.admin && data.fetchUser();
                     data.setSelectedItem("");
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }}>Back</button>

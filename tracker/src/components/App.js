@@ -87,7 +87,6 @@ async function fetchOption(){
 async function fetchAdminOption(){
     await axios.get(`${URL}/fetchAdminOption`, { withCredentials: true  }).then(
         async res=>{
-            console.log(res.data);
             // res.data.adminOption.toNavigate && setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year});
             res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
 
@@ -98,11 +97,10 @@ async function fetchAdminOption(){
                 })
                 
                 res.data.adminOption.toNavigate && match.length > 0 ? setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year})
-                : setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0][0]});
-                console.log(`adminoption year:${res.data.adminOption.year}`);
-                console.log(`yearlist: ${result.data[0]}`);
-                console.log(`match: ${match}`);
-                console.log(options);
+                : setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0]});
+                // console.log(`adminoption year:${res.data.adminOption.year}`);
+                // console.log(`yearlist: ${result.data[0]}`);
+                // console.log(`match: ${match}`);
             }
         })
 }
@@ -233,9 +231,9 @@ function handleDoubleClick(event){
     <div>
         <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
-        <Context.Provider value={{user:user, data:data, yearList:yearList, selectedItem:selectedItem, total:total,
-            options:options, toNavigate:toNavigate, URL:URL, fetchUser:fetchUser, setToNavigate:setToNavigate, setOptions:setOptions, setUser:setUser, setData:setData, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
-            onDelete:handleDelete, axiosFetchData:axiosFetchData, fetchYear:fetchYear, setyearList:setyearList, setSelectedItem:setSelectedItem }}> {/*passing data to all of the child*/}
+        <Context.Provider value={{user:user, yearList:yearList, selectedItem:selectedItem, total:total,
+            options:options, toNavigate:toNavigate, URL:URL, fetchUser:fetchUser, setToNavigate:setToNavigate, setOptions:setOptions, setUser:setUser, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
+            onDelete:handleDelete, fetchYear:fetchYear, setyearList:setyearList, setSelectedItem:setSelectedItem, fetchAdminOption:fetchAdminOption }}> {/*passing data to all of the child*/}
 
             <Router />
             

@@ -30,7 +30,7 @@ function Login(){
                                 data.setUser(res.data);
                                 // data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
                                 data.fetchUser();
-                                data.axiosFetchData();
+                                // data.axiosFetchData();
                                 navigate("/Home");
                                 console.log("Login Successful!");
                             } else if(password){
@@ -76,16 +76,20 @@ return(
 </form>
         <span className="vr"><label>or</label></span>
     <div>
-        <form>
+        <form className="socialLogin">
     {/* <a href={`${process.env.REACT_APP_API_URL}auth/google`} ></a> */}
+    <Link to={`${process.env.REACT_APP_API_URL}/auth/google`}>
     <button name="google" className="btn btn-lg btn-block btn-primary" style={{backgroundColor: "#dd4b39"}}
         // type="submit" formMethod="get" formAction="http://localhost:4000/auth/google"><i className="fab fa-google me-2"></i>Sign in with google</button>
         // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/google">Sign in with google</a></button>
-        type="button"><i className="fab fa-google me-2"></i><a href={`${process.env.REACT_APP_API_URL}/auth/google`}>Sign in with google</a></button>
+    type="button"><i className="fab fa-google me-2"></i>Sign in with google</button>
+    </Link>
+    <Link to={`${process.env.REACT_APP_API_URL}/auth/facebook`}>
     <button name="facebook" className="btn btn-lg btn-block btn-primary mb-2" style={{backgroundColor: "#3b5998"}}
         // type="submit" formMethod="get" formAction="http://localhost:4000/auth/facebook"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
         // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/facebook">Sign in with facebook</a></button>
-        type="button"><i className="fab fa-facebook-f me-2"></i><a href={`${process.env.REACT_APP_API_URL}/auth/facebook`}>Sign in with facebook</a></button>
+    type="button"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
+    </Link>
         </form>
     </div>  
 </div>

@@ -226,3 +226,9 @@ a{
 .adminHome{
     padding: 2rem;
 }
+
+.socialLogin{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}

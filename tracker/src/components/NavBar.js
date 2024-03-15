@@ -28,7 +28,6 @@ function NavBar(){
         await axios.get(`${data.URL}/Logout`, { withCredentials: true}).then((res)=>{
 //waiting for api response .then to make sure that user is already logout.                
             data.setUser(res.data); //need to set to null for the Router.js condition in navigating (res.data here will be null)
-            data.setData(null);
             data.setyearList(null)
             data.setTotal(null);
             data.setOptions({cycle:null, selectedMonth:null, selectedYear:null});
@@ -135,7 +134,6 @@ function NavBar(){
         setTimeout(async () => {
         await axios.post(`${data.URL}/postFetchAdminData&Option`, {}, { withCredentials: true });
         data.setTotal(null);
-        data.setData("");
         data.setOptions({cycle:null, selectedMonth:null, selectedYear:null});
         data.setyearList(null);
         data.setToNavigate(false);
