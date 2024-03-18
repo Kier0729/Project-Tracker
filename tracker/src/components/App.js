@@ -56,6 +56,7 @@ async function axiosFetchData(){
 //////////////////////////////////////////////////////////////////
 
 async function fetchYear(){
+    console.log("FetchYear");
     await axios.get(`${URL}/year`).then(
         res => {
             setyearList(res.data);
@@ -64,10 +65,10 @@ async function fetchYear(){
 }
 
 async function fetchOption(){
+    console.log("Fetch Option");
     await axios.get(`${process.env.REACT_APP_API_URL}/fetchOption`).then(
         async res=>{
-            console.log(res.data);
-                res.data.selectedItem && setSelectedItem(res.data.selectedItem.modify);
+            res.data.selectedItem && setSelectedItem(res.data.selectedItem.modify);
             if (res.data.clientOption.month && res.data.clientOption.year){
                 const result = await axios.get(`${URL}/year`);
                 const match = result.data.filter(items=>{
@@ -87,11 +88,12 @@ async function fetchOption(){
 
 //modification for deleted data
 async function fetchAdminOption(){
+    console.log("FetchAdminOption");
     await axios.get(`${URL}/fetchAdminOption`, { withCredentials: true  }).then(
         async res=>{
             // res.data.adminOption.toNavigate && setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year});
             res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
-
+            res.data.selectedItem && setSelectedItem(res.data.selectedItem.modify);
             if (res.data.adminOption.month && res.data.adminOption.year){
                 const result = await axios.get(`${URL}/year`);
                 const match = result.data.filter(items=>{

@@ -16,16 +16,13 @@ function Modify(){
         fname:data.selectedItem.fname,
     });
 
-    function postSelectedItem(){
-        axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {}, { withCredentials: true }/*, options*/);    
+    async function postSelectedItem(receieved){
+        const result = await axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {receieved}, { withCredentials: true }/*, options*/);    
+        console.log(result); //IF THE APP PAUSE IT MAYBE IT IS WAITING A RESPONSE FOR AWAIT CHECK THE SERVER IF IT IS SENDING BACK A RESPONSE
     }
 
-    useEffect(()=>{
-        // setTimeout(()=>{
-        console.log(modify);
+    useEffect(()=>{       
         axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {modify}, { withCredentials: true }/*, options*/);    
-
-            // }, 500);
     },[]);
     
     function handleChange(event){
@@ -73,28 +70,35 @@ function Modify(){
             </div>
             <div>
                 <button onClick={()=>{
+                    setTimeout(()=>{
                     if(modify.merchant && modify.amount){
                         data.onModify(modify);
+                        // data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
                         !data.user.admin && data.fetchUser();
-                        data.user.admin && data.fetchAdminOption();
+                        // data.user.admin && data.fetchAdminOption();
                         data.setSelectedItem("");
                         postSelectedItem();
                         modify.fname ? navigate("/AdminHome") : navigate("/Home");
                     }
+                    }, 500);
                     }}>Save</button>
                 <button onClick={()=>{
+                    setTimeout(()=>{
                     data.onDelete(modify.id);
-                    !data.user.admin && data.fetchUser();
-                    data.user.admin && data.fetchAdminOption();
+                    data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
                     data.setSelectedItem("");
                     postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
+                    }, 500);
                     }}>Delete</button>
                 <button onClick={()=>{
-                    !data.user.admin && data.fetchUser();
+                    setTimeout(()=>{
+                    // !data.user.admin && data.fetchUser();
+                    // data.user.admin && data.fetchAdminOption();
                     data.setSelectedItem("");
                     postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
+                    }, 500);
                     }}>Back</button>
             </div>
         </div>

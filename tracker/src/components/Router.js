@@ -48,7 +48,6 @@ function Router(){
     <div className="App">
       <HashRouter>
         <Routes>
-          {console.log(data.selectedItem)}
             <Route path={`/`} element={<Layout />}>{/*Parent*/}
             <Route path={`/`} element={!user ? <Login /> : <Navigate to="/Home" />}/>{/*Outlet/Child*/}
             <Route path={`/Register`} element={<Register />}/>{/*Outlet/Child*/}
