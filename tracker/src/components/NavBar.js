@@ -12,9 +12,10 @@ function NavBar(){
     const date = new Date();
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "View all"];
     const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-    const [yearList, setyearList] = useState(data.yearList);
+    const [yearList, setyearList] = useState("");
     
     async function fetchYear(){
+        console.log("FetchYear!");
         await axios.get(`${data.URL}/year`).then(
             res => {
                 setyearList(res.data);
@@ -39,64 +40,29 @@ function NavBar(){
         // data.fetchYear();
         if(event.target.name == "endCycle"){
             data.setOptions(prev=>{return{cycle:event.target.value, selectedMonth:prev.selectedMonth, selectedYear:prev.selectedYear}});
-            data.setTotal(null);
+            // data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
-            // try{//option should be declared as an object
-            //     await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
-            //     //.then(res => res.json()) axios dont need to convert json
-            //     .then((res) => {
-            //         data.setData(res.data);
-            //         let sum = 0;
-            //         if(res.data){ res.data.map(items => {
-            //             sum = sum + items.amount;
-            //         });
-            //         data.setTotal(sum.toFixed(2)); 
-            //         } else {
-            //             data.setUser(res.data);
-            //         }
-            //     })
-            // } catch(error){console.log(error.message);}
+            try{//option should be declared as an object
+                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:event.target.value, year:data.options.selectedYear, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+            } catch(error){console.log(error.message);}
         }
         
         else if (event.target.name == "months"){
             data.setOptions(prev=>{return{cycle:prev.cycle, selectedMonth:event.target.value, selectedYear:prev.selectedYear}});
-            data.setTotal(null);
+            // data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
-            // try{//option should be declared as an object
-            //     await axios.post(`${data.URL}/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
-            //     //.then(res => res.json()) axios dont need to convert json
-            //     .then((res) => {
-            //         data.setData(res.data);
-            //         let sum = 0;
-            //         if(res.data){ res.data.map(items => {
-            //             sum = sum + items.amount;
-            //         });
-            //         data.setTotal(sum.toFixed(2)); 
-            //         } else {
-            //             data.setUser(res.data);
-            //         }
-            //     })
-            // } catch(error){console.log(error.message);}
+            try{//option should be declared as an object
+                await axios.post(`${data.URL}/fetch`, {month:event.target.value, cycle:data.options.cycle , year:data.options.selectedYear, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/)
+                 //for post/put/patch/delete request needs options
+            } catch(error){console.log(error.message);}
         }
         else if (event.target.name == "year"){
             data.setOptions(prev=>{return{cycle:prev.cycle, selectedMonth:prev.selectedMonth, selectedYear:event.target.value}});
-            data.setTotal(null);
+            // data.setTotal(null);
 //API request done here to avoid delay in sending and receiving request/respond
-            // try{//option should be declared as an object
-            //     await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
-            //     //.then(res => res.json()) axios dont need to convert json
-            //     .then((res) => {
-            //         data.setData(res.data);
-            //         let sum = 0;
-            //         if(res.data){ res.data.map(items => {
-            //             sum = sum + items.amount;
-            //         });
-            //         data.setTotal(sum.toFixed(2)); 
-            //         } else {
-            //             data.setUser(res.data);
-            //         }
-            //     })
-            // } catch(error){console.log(error.message);}
+            try{//option should be declared as an object
+                await axios.post(`${data.URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:event.target.value, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+            } catch(error){console.log(error.message);}
         }
 //////////////////////////////////////////////////////////////////////////////////
     }

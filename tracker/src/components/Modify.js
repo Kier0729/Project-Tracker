@@ -18,7 +18,7 @@ function Modify(){
 
     async function postSelectedItem(receieved){
         const result = await axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {receieved}, { withCredentials: true }/*, options*/);    
-        console.log(result); //IF THE APP PAUSE IT MAYBE IT IS WAITING A RESPONSE FOR AWAIT CHECK THE SERVER IF IT IS SENDING BACK A RESPONSE
+//IF THE APP PAUSE, MAYBE IT IS WAITING A RESPONSE FOR THE AWAIT. CHECK THE SERVER IF IT IS SENDING BACK A RESPONSE
     }
 
     useEffect(()=>{       
@@ -74,8 +74,7 @@ function Modify(){
                     if(modify.merchant && modify.amount){
                         data.onModify(modify);
                         // data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
-                        !data.user.admin && data.fetchUser();
-                        // data.user.admin && data.fetchAdminOption();
+                        // !data.user.admin && data.fetchUser();
                         data.setSelectedItem("");
                         postSelectedItem();
                         modify.fname ? navigate("/AdminHome") : navigate("/Home");
@@ -85,7 +84,7 @@ function Modify(){
                 <button onClick={()=>{
                     setTimeout(()=>{
                     data.onDelete(modify.id);
-                    data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
+                    // data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
                     data.setSelectedItem("");
                     postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");

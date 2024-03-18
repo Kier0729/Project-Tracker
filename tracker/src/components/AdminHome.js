@@ -7,50 +7,60 @@ import NavBar from "./NavBar";
 function AdminHome(){
     const data = useContext(Context);
     // axios.defaults.withCredentials = true;
-    const [adminData, setAdminData] = useState("");
-
-    //MODIFY/ADMIN HOME hypo fetchadminoption should be called when adminhome render then fetch data
-    //remove fetchadminoption in modify.js for save button
+    const [adminData, setAdminData] = useState();
+    const [toNavigate, setToNavigate] = useState(data.toNavigate);
     
-    // async function fetchAdminOption(){
-    //     console.log("FetchAdminOption");
-    //     await axios.get(`${data.URL}/fetchAdminOption`, { withCredentials: true  }).then(
-    //         async res=>{
-    //             // res.data.adminOption.toNavigate && setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year});
-    //             res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
-    //             res.data.selectedItem && setSelectedItem(res.data.selectedItem.modify);
-    //             if (res.data.adminOption.month && res.data.adminOption.year){
-    //                 const result = await axios.get(`${data.URL}/year`);
-    //                 const match = result.data.filter(items=>{
-    //                     return items == res.data.adminOption.year;
-    //                 })
-                    
-    //                 res.data.adminOption.toNavigate && match.length > 0 ? setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year})
-    //                 : setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0]});
-    //                 // console.log(`adminoption year:${res.data.adminOption.year}`);
-    //                 // console.log(`yearlist: ${result.data[0]}`);
-    //                 // console.log(`match: ${match}`);
-    //             }
-    //         })
-    // }
-
-    async function fetchAll(){
-        console.log("fetchAdminHome");
-        try{//option should be declared as an object // { withCredentials: true } to send back cookies to server //headers: myHeader,
-            const result = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:data.options.selectedYear, toNavigate:data.toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
-                setAdminData(result.data);
-                console.log(result.data);
-                let sum = 0;
-                if(result.data){result.data.map(items => {
-                    sum = sum + items.amount;
-                });
-                data.setTotal(sum.toFixed(2)); }
-        } catch(error){console.log(error.message);}
-    }
+    //for AdminHome fetchAminOption is being called here instead in modify.js in every click(save/delete) unlike in Home for fetchclient option
+    async function fetchAdminOption(){
+            console.log("FetchAdminOption");
+            await axios.get(`${process.env.REACT_APP_API_URL}/fetchAdminOption`, { withCredentials: true  }).then(
+                async res=>{
+                    res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
+                    if (res.data.adminOption.month && res.data.adminOption.year){
+                        const result = await axios.get(`${data.URL}/year`);
+                        const match = result.data.filter(items=>{
+                            return items == res.data.adminOption.year;
+                        })
+                        if (match.length == 0){
+                            const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.adminOption.month, cycle:res.data.adminOption.cycle, year:result.data[0], toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                            setAdminData(result2.data);
+                            let sum = 0;
+                        if(result2.data){result2.data.map(items => {
+                            sum = sum + items.amount;
+                        });
+                            data.setTotal(sum.toFixed(2)); }
+                        } 
+                        else if (match.length > 0){
+                            const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.adminOption.month, cycle:res.data.adminOption.cycle, year:res.data.adminOption.year, toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                            setAdminData(result2.data);
+                            let sum = 0;
+                        if(result2.data){result2.data.map(items => {
+                            sum = sum + items.amount;
+                        });
+                            data.setTotal(sum.toFixed(2)); }
+                        }
+                    }
+                    else {
+                        const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:data.options.selectedYear, toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                            setAdminData(result2.data);
+                            let sum = 0;
+                        if(result2.data){result2.data.map(items => {
+                            sum = sum + items.amount;
+                        });
+                            data.setTotal(sum.toFixed(2)); }
+                    }
+                })
+        }
 
     useEffect(()=>{
         // setTimeout(()=>{
-        fetchAll();
+        //   let process = true;  
+        //   if(process){
+        // }
+        //   return ()=>{
+        //       process = false;//to stop executing continuously
+        //   }
+        fetchAdminOption();
         // }, 500);
     },[]);
             

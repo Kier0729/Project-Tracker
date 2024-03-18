@@ -6,34 +6,60 @@ import NavBar from "./NavBar";
 import axios from "axios";
 
 function Home(){
+    const date = new Date();
     const data = useContext(Context); //passing the data received to a const data
     const [clientData, setClientData] = useState("");
 
-    async function fetchClientData(){
-        console.log("fetchClientData");
-        try{//option should be declared as an object // { withCredentials: true } to send back cookies to server //headers: myHeader,
-            await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
-            //.then(res => res.json()) axios dont need to convert json
-            .then((res) => { 
-                setClientData(res.data);
-                let sum = 0;
-                if(res.data){ res.data.map(items => {
-                    sum = sum + items.amount;
-                });
-                data.setTotal(sum.toFixed(2)); } 
-            })
-        } catch(error){console.log(error.message);}
+    async function fetchOption(){
+        console.log("Fetch Option");
+        await axios.get(`${process.env.REACT_APP_API_URL}/fetchOption`).then(
+            async res=>{
+                if (res.data.clientOption.month && res.data.clientOption.year){
+                    const result = await axios.get(`${process.env.REACT_APP_API_URL}/year`);
+                    const match = result.data.filter(items=>{
+                        return items == res.data.clientOption.year;
+                    })
+                    if(match.length == 0){
+                        const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.clientOption.month, cycle:res.data.clientOption.cycle, year:result.data[0]}, { withCredentials: true }/*, options*/); //for post/put/patch/delete request needs opstions
+                        setClientData(result2.data);
+                        let sum = 0;
+                        if(result2.data){ result2.data.map(items => {
+                            sum = sum + items.amount;
+                        });
+                        data.setTotal(sum.toFixed(2)); }
+                    }
+                    else if(match.length > 0){
+                        const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.clientOption.month, cycle:res.data.clientOption.cycle, year:res.data.clientOption.year}, { withCredentials: true }/*, options*/); //for post/put/patch/delete request needs opstions
+                        setClientData(result2.data);
+                        let sum = 0;
+                        if(result2.data){ result2.data.map(items => {
+                            sum = sum + items.amount;
+                        });
+                        data.setTotal(sum.toFixed(2)); }
+                    }
+                }
+                else {
+                    const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:data.options.selectedMonth, cycle:data.options.cycle, year:data.options.selectedYear}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                    setClientData(result2.data);
+                        let sum = 0;
+                    if(result2.data){result2.data.map(items => {
+                        sum = sum + items.amount;
+                    });
+                        data.setTotal(sum.toFixed(2)); }
+                }
+            }
+        )
     }
 
     useEffect(()=>{
-        !data.user.admin && fetchClientData();    
+        !data.user.admin && fetchOption();    
     },[]);
 
     return(
         <div>
             <NavBar />
             {/* select to ONLY pass the selected data/function for practice*/}
-            <Context.Provider value={{id:data.user.id, onAdd:data.onAdd, axiosFetchData:data.axiosFetchData, fetchYear:data.fetchYear}}>
+            <Context.Provider value={{id:data.user.id, onAdd:data.onAdd, fetchYear:data.fetchYear}}>
                 <CreateEntry />
             </Context.Provider>
 

@@ -1,4 +1,3 @@
-//facebook login uri// google redirect
 //"proxy":"https://project-tracker-server-h8ni.onrender.com"
 import React, {useState, useEffect} from "react"
 import Context from "./Context"; //use for passing data to components/child using (Context.Provider)
@@ -27,13 +26,6 @@ const[selectedItem, setSelectedItem]=useState("");
 const date = new Date();
 const [yearList, setyearList] = useState(null);
 const [options, setOptions] = useState({cycle:null, selectedMonth:null, selectedYear:null})
-
-// const myHeader = {
-//     // withCredentials: true,
-//     "accept ": "application/json",
-//     "Access-Control-Allow-Origin": "https://project-tracker-8zss.onrender.com/",
-//     "Access-Control-Allow-Credentials": true,
-//   }
 
 //use for http request to api/server fetching data
 //////////////////////////////////////////////////////////////////
@@ -111,7 +103,6 @@ async function fetchAdminOption(){
 
 async function fetchUser(){
     console.log("fetchInitiate");
-//   if(process){
     try{
         // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
         await axios.get(`${URL}/IsLogIn`, { withCredentials: true  }/*, options*/) //for post/put/patch/delete request needs opstions
@@ -121,7 +112,6 @@ async function fetchUser(){
             if(user_email || user_username){
                 console.log("Userdata received!");
                 setUser(res.data);//Update user after login success
-                fetchYear();
                 admin && fetchAdminOption();
                 admin == null && fetchOption();
             } else if (password){
@@ -131,15 +121,16 @@ async function fetchUser(){
             }        
         })
     } catch(error){console.log(error.message);}
-    // }
-  }
+}
 
 useEffect(()=>{
-//   let process = true;  
     fetchUser();
-//   return ()=>{
-//       process = false;//to stop executing continuously
-//   }
+    //   let process = true;  
+    //   if(process){
+    // }
+    //   return ()=>{
+    //       process = false;//to stop executing continuously
+    //   }
 },[]);
 
 function handleDoubleClick(event){
@@ -152,12 +143,13 @@ function handleDoubleClick(event){
         merchant:val2.innerText,
         amount:val3.innerText,
         fname:val4.innerText
-    });} else {
-        setSelectedItem({
-            id:event.target.id,
-            date:val1.innerText,
-            merchant:val2.innerText,
-            amount:val3.innerText,
+    });
+    } else {
+    setSelectedItem({
+        id:event.target.id,
+        date:val1.innerText,
+        merchant:val2.innerText,
+        amount:val3.innerText,
         }); 
     }
 }
@@ -181,8 +173,7 @@ function handleDoubleClick(event){
         await axios.post(`${URL}/`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})//postData(hence use receieved) here is not updated when this is executed
         .then(res=>{
             console.log(res.data);
-            // setData(res.data);// need to update something here to make the screen to reupdate
-            fetchYear();//instead of updating data which have no use update year to trigger an update to app.js
+            fetchYear();//Update year incase new data was added.
         })
     }
 //////////////////////////////////////////////////////////////////
@@ -208,6 +199,7 @@ function handleDoubleClick(event){
         .then(res=>{
             console.log(res.data);
         })
+        user && user.admin ? fetchAdminOption() : fetchUser();
     }
 //////////////////////////////////////////////////////////////////
 
@@ -227,7 +219,8 @@ function handleDoubleClick(event){
         //for axios.delete option can have an optional {headers,data(always named as data)} where data holds the body or value to be pass
         .then(res=>{
             console.log(res.data);
-        })//Update the value of data
+        });
+        user && user.admin ? fetchAdminOption() : fetchUser();
     }
 //////////////////////////////////////////////////////////////////
     
