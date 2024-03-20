@@ -6,7 +6,6 @@ import NavBar from "./NavBar";
 import axios from "axios";
 
 function Home(){
-    const date = new Date();
     const data = useContext(Context); //passing the data received to a const data
     const [clientData, setClientData] = useState("");
 

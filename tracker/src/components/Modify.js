@@ -73,8 +73,6 @@ function Modify(){
                     setTimeout(()=>{
                     if(modify.merchant && modify.amount){
                         data.onModify(modify);
-                        // data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
-                        // !data.user.admin && data.fetchUser();
                         data.setSelectedItem("");
                         postSelectedItem();
                         modify.fname ? navigate("/AdminHome") : navigate("/Home");
@@ -84,7 +82,6 @@ function Modify(){
                 <button onClick={()=>{
                     setTimeout(()=>{
                     data.onDelete(modify.id);
-                    // data.user && data.user.admin ? data.fetchAdminOption() : data.fetchUser();
                     data.setSelectedItem("");
                     postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");
@@ -92,8 +89,6 @@ function Modify(){
                     }}>Delete</button>
                 <button onClick={()=>{
                     setTimeout(()=>{
-                    // !data.user.admin && data.fetchUser();
-                    // data.user.admin && data.fetchAdminOption();
                     data.setSelectedItem("");
                     postSelectedItem();
                     modify.fname ? navigate("/AdminHome") : navigate("/Home");

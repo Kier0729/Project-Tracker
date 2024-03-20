@@ -28,9 +28,7 @@ function Login(){
                             const {user_email, password, notFound} = res.data;
                             if (user_email){ 
                                 data.setUser(res.data);
-                                // data.fetchYear();//Get the year record in database before setting user a value(before granting access/navigating to home)
-                                data.fetchUser();
-                                // data.axiosFetchData();
+                                data.fetchUser();//to make some update after login
                                 navigate("/Home");
                                 console.log("Login Successful!");
                             } else if(password){
@@ -44,8 +42,7 @@ function Login(){
                                 console.log("User not exist!");
                                 navigate("/Register");
                             }
-                        });//
-                // navigate("/Home");
+                        });
             } else {
                 console.log("Invalid Username!");
                 setCred((prev)=>{return {username:"", password:prev.password}});
@@ -77,17 +74,12 @@ return(
         <span className="vr"><label>or</label></span>
     <div>
         <form className="socialLogin">
-    {/* <a href={`${process.env.REACT_APP_API_URL}auth/google`} ></a> */}
     <Link to={`${process.env.REACT_APP_API_URL}/auth/google`}>
     <button name="google" className="btn btn-lg btn-block btn-primary" style={{backgroundColor: "#dd4b39"}}
-        // type="submit" formMethod="get" formAction="http://localhost:4000/auth/google"><i className="fab fa-google me-2"></i>Sign in with google</button>
-        // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/google">Sign in with google</a></button>
     type="button"><i className="fab fa-google me-2"></i>Sign in with google</button>
     </Link>
     <Link to={`${process.env.REACT_APP_API_URL}/auth/facebook`}>
     <button name="facebook" className="btn btn-lg btn-block btn-primary mb-2" style={{backgroundColor: "#3b5998"}}
-        // type="submit" formMethod="get" formAction="http://localhost:4000/auth/facebook"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
-        // type="button"><i className="fab fa-google me-2"></i><a href="http://localhost:4000/auth/facebook">Sign in with facebook</a></button>
     type="button"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
     </Link>
         </form>

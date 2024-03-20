@@ -18,17 +18,22 @@ function AdminHome(){
                     res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
                     if (res.data.adminOption.month && res.data.adminOption.year){
                         const result = await axios.get(`${data.URL}/year`);
+                        let year;
+                        result.data.length == 1 && (year = result.data[0]); // to remove year in ['2024'] outside the array with [0] 
+                        result.data.length > 1 && (year = result.data);
                         const match = result.data.filter(items=>{
                             return items == res.data.adminOption.year;
                         })
                         if (match.length == 0){
-                            const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.adminOption.month, cycle:res.data.adminOption.cycle, year:result.data[0], toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
+                            const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.adminOption.month, cycle:res.data.adminOption.cycle, year:year[0], toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
                             setAdminData(result2.data);
                             let sum = 0;
-                        if(result2.data){result2.data.map(items => {
+                        if(result2.data){
+                            result2.data.map(items => {
                             sum = sum + items.amount;
                         });
-                            data.setTotal(sum.toFixed(2)); }
+                            data.setTotal(sum.toFixed(2)); 
+                            } else {data.setTotal(sum.toFixed(2));}
                         } 
                         else if (match.length > 0){
                             const result2 = await axios.post(`${process.env.REACT_APP_API_URL}/fetch`, {month:res.data.adminOption.month, cycle:res.data.adminOption.cycle, year:res.data.adminOption.year, toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
@@ -37,7 +42,8 @@ function AdminHome(){
                         if(result2.data){result2.data.map(items => {
                             sum = sum + items.amount;
                         });
-                            data.setTotal(sum.toFixed(2)); }
+                            data.setTotal(sum.toFixed(2)); 
+                            } else {data.setTotal(sum.toFixed(2));}
                         }
                     }
                     else {
@@ -47,7 +53,8 @@ function AdminHome(){
                         if(result2.data){result2.data.map(items => {
                             sum = sum + items.amount;
                         });
-                            data.setTotal(sum.toFixed(2)); }
+                            data.setTotal(sum.toFixed(2)); 
+                            } else {data.setTotal(sum.toFixed(2));}
                     }
                 })
         }

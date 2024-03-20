@@ -69,9 +69,8 @@ function Register(){
                     await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, { withCredentials: true})
                     .then(res=>{
                         data.setUser(res.data);
-                        // data.axiosFetchData();//Then update data
                         res.data ? navigate("/Home") : navigate("/");
-                    });//
+                    });
                 } else {
                     setCred((prev)=>{
                         return {
@@ -88,7 +87,6 @@ function Register(){
             } else {
                 setCred((prev)=>{return {username:"", password:prev.password}});
                 setplaceHold("Enter a valid email.")
-                // navigate("/Register");
             }
         }
 

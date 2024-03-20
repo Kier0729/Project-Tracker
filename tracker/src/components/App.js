@@ -1,4 +1,5 @@
 //"proxy":"https://project-tracker-server-h8ni.onrender.com"
+//"proxy":"http://localhost:4000"
 import React, {useState, useEffect} from "react"
 import Context from "./Context"; //use for passing data to components/child using (Context.Provider)
 import Router from "./Router";
@@ -11,7 +12,8 @@ function App(){
 const URL = process.env.REACT_APP_API_URL;
 //Data received from server/api
 //////////////////////////////////////////////////////////////////
-const[data, setData] = useState("");
+// const[data, setData] = useState("");
+
 //////////////////////////////////////////////////////////////////
 const [user, setUser] = useState(null);//SHOULD INITIALIZE/DECLARE TYPEOF DATA {Object} or null
 const[total, setTotal] = useState(null);
@@ -24,37 +26,7 @@ const[selectedItem, setSelectedItem]=useState("");
 //////////////////////////////////////////////////////////////////
 
 const date = new Date();
-const [yearList, setyearList] = useState(null);
 const [options, setOptions] = useState({cycle:null, selectedMonth:null, selectedYear:null})
-
-//use for http request to api/server fetching data
-//////////////////////////////////////////////////////////////////
-async function axiosFetchData(){
-    // if(isTrue){
-        try{//option should be declared as an object // { withCredentials: true } to send back cookies to server //headers: myHeader,
-        await axios.post(`${URL}/fetch`, {month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear, toNavigate:toNavigate}, { withCredentials: true }/*, options*/) //for post/put/patch/delete request needs opstions
-        //.then(res => res.json()) axios dont need to convert json
-        .then((res) => { 
-            setData(res.data);
-            // let sum = 0;
-            // if(res.data){ res.data.map(items => {
-            //     sum = sum + items.amount;
-            // });
-            // setTotal(sum.toFixed(2)); } 
-        })
-    } catch(error){console.log(error.message);}
-    // }
-}
-//////////////////////////////////////////////////////////////////
-
-async function fetchYear(){
-    console.log("FetchYear");
-    await axios.get(`${URL}/year`).then(
-        res => {
-            setyearList(res.data);
-        }
-    )
-}
 
 async function fetchOption(){
     console.log("Fetch Option");
@@ -71,8 +43,12 @@ async function fetchOption(){
                 : setOptions({cycle:res.data.clientOption.cycle, selectedMonth:res.data.clientOption.month, selectedYear:result.data[0]});
             }
             if(!res.data.clientOption.cycle && !res.data.clientOption.month && !res.data.clientOption.year){
+                console.log("options set to default");
                 const result = await axios.get(`${URL}/year`);
                 setOptions({cycle:7, selectedMonth:date.getMonth()+1, selectedYear:result.data[0]});
+            } else if (!res.data.clientOption.year){
+                const result = await axios.get(`${URL}/year`);
+                setOptions({cycle:res.data.clientOption.cycle, selectedMonth:res.data.clientOption.month, selectedYear:result.data[0]});
             }
         }
     )
@@ -91,12 +67,14 @@ async function fetchAdminOption(){
                 const match = result.data.filter(items=>{
                     return items == res.data.adminOption.year;
                 })
-                
-                res.data.adminOption.toNavigate && match.length > 0 ? setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year})
-                : setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0]});
+                match.length > 0 ? setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year})
+                : setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0].length > 0 ? result.data[0] : null});
                 // console.log(`adminoption year:${res.data.adminOption.year}`);
                 // console.log(`yearlist: ${result.data[0]}`);
                 // console.log(`match: ${match}`);
+            } else if (res.data.adminOption.year){
+                const result = await axios.get(`${URL}/year`);
+                setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:result.data[0].length > 0 ? result.data[0] : null});
             }
         })
 }
@@ -173,8 +151,8 @@ function handleDoubleClick(event){
         await axios.post(`${URL}/`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})//postData(hence use receieved) here is not updated when this is executed
         .then(res=>{
             console.log(res.data);
-            fetchYear();//Update year incase new data was added.
         })
+        fetchOption();
     }
 //////////////////////////////////////////////////////////////////
 //insert the modified data received(from Modify.js) to the selected index(received.id) using SPLICE
@@ -199,7 +177,7 @@ function handleDoubleClick(event){
         .then(res=>{
             console.log(res.data);
         })
-        user && user.admin ? fetchAdminOption() : fetchUser();
+        !user.admin && fetchOption();
     }
 //////////////////////////////////////////////////////////////////
 
@@ -220,7 +198,7 @@ function handleDoubleClick(event){
         .then(res=>{
             console.log(res.data);
         });
-        user && user.admin ? fetchAdminOption() : fetchUser();
+        !user.admin && fetchOption();
     }
 //////////////////////////////////////////////////////////////////
     
@@ -228,9 +206,9 @@ function handleDoubleClick(event){
     <div>
         <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
-        <Context.Provider value={{user:user, yearList:yearList, selectedItem:selectedItem, total:total,
+        <Context.Provider value={{user:user, selectedItem:selectedItem, total:total,
             options:options, toNavigate:toNavigate, URL:URL, fetchUser:fetchUser, setToNavigate:setToNavigate, setOptions:setOptions, setUser:setUser, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
-            onDelete:handleDelete, fetchYear:fetchYear, setyearList:setyearList, setSelectedItem:setSelectedItem, fetchAdminOption:fetchAdminOption }}> {/*passing data to all of the child*/}
+            onDelete:handleDelete, setSelectedItem:setSelectedItem, fetchAdminOption:fetchAdminOption }}> {/*passing data to all of the child*/}
 
             <Router />
             
