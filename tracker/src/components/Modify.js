@@ -7,6 +7,8 @@ import axios from "axios";
 function Modify(){
     const data = useContext(Context); //passing the data received
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
+    const[errMsg, setErrMsg] = useState({errMsg1:"", errMsg2:"", errMsg3:""});
+    const[isError , setIsError] = useState({isError1:false, isError2:false, isError3:false});
 
     const [modify, setModify] = useState({
         id:data.selectedItem.id,
@@ -15,6 +17,24 @@ function Modify(){
         amount:data.selectedItem.amount,
         fname:data.selectedItem.fname,
     });
+    const isnumber = !isNaN(modify.amount.replace(/,/g,""));
+    const noSpace = modify.merchant.replace(/\s/g, "");
+    const dateFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(modify.date);
+
+    const myDate = modify.date.split("/");
+    const myMonth = myDate[0];
+    const myDay = myDate[1];
+    const myYear = myDate[2];
+    const isDate = createDate();
+    function createDate() {
+        var d = new Date(`${myMonth}/${myDay}/${myYear}`);
+        if ( d.getMonth() != myMonth - 1
+          || d.getDate() != myDay
+          || d.getFullYear() != myYear) {
+          return null;
+        }
+        return d;
+      }
 
     async function postSelectedItem(receieved){
         const result = await axios.post(`${process.env.REACT_APP_API_URL}/postSelectedItem`, {receieved}, { withCredentials: true }/*, options*/);    
@@ -26,12 +46,16 @@ function Modify(){
     },[]);
     
     function handleChange(event){
+        event.target.name==="date" && setIsError({...isError, isError1:false})
+        event.target.name==="merchant" && setIsError({...isError, isError2:false})
+        event.target.name==="amount" && setIsError({...isError, isError3:false})
+
         setModify((prev)=>{
             if(event.target.name==="date"){
                 return({
                     id:prev.id,
                     fname:prev.fname,
-                    date:event.target.value,
+                    date:event.target.value.trim(),
                     merchant:prev.merchant,
                     amount:prev.amount,
                 });
@@ -51,7 +75,7 @@ function Modify(){
                     fname:prev.fname,
                     date:prev.date,
                     merchant:prev.merchant,
-                    amount:event.target.value,
+                    amount:event.target.value.trim(),
                 });
             }
         }  
@@ -61,23 +85,39 @@ function Modify(){
         <div className="modify" >
             <div style={modify.fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
             {modify.fname && <label name="fname" >{modify.fname}</label>}
-            <label>Date</label>
-            <label>Merchant</label>
-            <label>Amount</label>
-            <input name="date" value={modify.date} placeholder="Please enter date:" onChange={handleChange} style={modify.fname && {gridColumnStart: `2`, gridColumnEnd: `3`}}></input>
-            <input name="merchant" value={modify.merchant} placeholder="Please enter merchant:" onChange={handleChange} ></input>
-            <input name="amount" value={modify.amount} placeholder="Please enter amount:" onChange={handleChange} ></input>
+            <label className={isError.isError1 && modify.date ? "errorPlaceholder" : ""}>{isError.isError1 && modify.date ? errMsg.errMsg1 : "Date"}</label>
+            <label className={isError.isError2 && !noSpace && modify.merchant ? "errorPlaceholder" : ""}>{isError.isError2 && !noSpace && modify.merchant ? errMsg.errMsg2 : "Merchant"}</label>
+            <label className={isError.isError3 && modify.amount ? "errorPlaceholder" : ""}>{isError.isError3 && modify.amount != "" ? errMsg.errMsg3 : "Amount"}</label>
+            <input className={isError.isError1 ? "error errorPlaceholder" : ""} name="date" value={modify.date} placeholder={isError.isError1 ? errMsg.errMsg1 : "Date"} onChange={handleChange} style={modify.fname && {gridColumnStart: `2`, gridColumnEnd: `3`}} ></input>
+            <input className={isError.isError2 ? "error errorPlaceholder" : ""} name="merchant" value={modify.merchant} placeholder={isError.isError2 ? errMsg.errMsg2 : "Merchant"} onChange={handleChange} ></input>
+            <input className={isError.isError3 ? "error errorPlaceholder" : ""} name="amount" value={modify.amount} placeholder={isError.isError3 ? errMsg.errMsg3 : "Amount"} onChange={handleChange} ></input>
             </div>
             <div>
                 <button onClick={()=>{
-                    setTimeout(()=>{
-                    if(modify.merchant && modify.amount){
-                        data.onModify(modify);
+                    if(modify.date && modify.merchant && modify.amount.replace(/,/g,"") && isnumber && isDate && dateFormat && noSpace){
+                        data.onModify({...modify, amount: modify.amount.replace(/,/g,"")});
                         data.setSelectedItem("");
                         postSelectedItem();
                         modify.fname ? navigate("/AdminHome") : navigate("/Home");
-                    }
-                    }, 500);
+                    } else if (!modify.date){
+                        setIsError({...isError, isError1:true});
+                        setErrMsg({...errMsg, errMsg1:"Please enter the date:"});
+                    } else if (!isDate || !dateFormat){
+                            setIsError({...isError, isError1:true});
+                            setErrMsg({...errMsg, errMsg1:"Please enter a valid date/format: MM/DD/YYYY"});
+                    } else if (!modify.merchant){
+                        setIsError({...isError, isError2:true});
+                        setErrMsg({...errMsg, errMsg2:"Please fill out this field:"});
+                    } else if (!noSpace){
+                        setIsError({...isError, isError2:true});
+                        setErrMsg({...errMsg, errMsg2:"Please don't leave merchant field blank:"});
+                    }  else if (!modify.amount.replace(/,/g,"")){
+                        setIsError({...isError, isError3:true});
+                        setErrMsg({...errMsg, errMsg3:"Please enter the amount:"});
+                    } else if (!isnumber) {
+                        setIsError({...isError, isError3:true});
+                        setErrMsg({...errMsg, errMsg3:"Please enter a valid amount:"});
+                    } 
                     }}>Save</button>
                 <button onClick={()=>{
                     setTimeout(()=>{

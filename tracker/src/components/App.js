@@ -27,6 +27,8 @@ const[selectedItem, setSelectedItem]=useState("");
 
 const date = new Date();
 const [options, setOptions] = useState({cycle:null, selectedMonth:null, selectedYear:null})
+const [popup, setPopup] = useState(null);
+const [socPop, setSocPop] = useState(false);
 
 async function fetchOption(){
     console.log("Fetch Option");
@@ -81,6 +83,9 @@ async function fetchAdminOption(){
 
 async function fetchUser(){
     console.log("fetchInitiate");
+    await axios.get(`${URL}/SocPop`, { withCredentials: true  }).then(res=>{
+        setSocPop(res.data);
+    });
     try{
         // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
         await axios.get(`${URL}/IsLogIn`, { withCredentials: true  }/*, options*/) //for post/put/patch/delete request needs opstions
@@ -112,11 +117,10 @@ useEffect(()=>{
 },[]);
 
 function handleDoubleClick(event){
-    const {date:val1, merchant:val2, amount:val3, fname:val4} = event.target.children;
-    
+    const {date:val1, merchant:val2, amount:val3, fname:val4} = event.children;
     if(val4){
     setSelectedItem({
-        id:event.target.id,
+        id:event.id,
         date:val1.innerText,
         merchant:val2.innerText,
         amount:val3.innerText,
@@ -124,7 +128,7 @@ function handleDoubleClick(event){
     });
     } else {
     setSelectedItem({
-        id:event.target.id,
+        id:event.id,
         date:val1.innerText,
         merchant:val2.innerText,
         amount:val3.innerText,
@@ -207,7 +211,7 @@ function handleDoubleClick(event){
         <div className="container">
 {/*passing value to Context.Provider (data/function as an OBJECT to all of the child)*/}
         <Context.Provider value={{user:user, selectedItem:selectedItem, total:total,
-            options:options, toNavigate:toNavigate, URL:URL, fetchUser:fetchUser, setToNavigate:setToNavigate, setOptions:setOptions, setUser:setUser, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
+            options:options, toNavigate:toNavigate, URL:URL, popup:popup, socPop:socPop, setSocPop:setSocPop, setPopup:setPopup, fetchUser:fetchUser, setToNavigate:setToNavigate, setOptions:setOptions, setUser:setUser, setTotal:setTotal, onAdd:handleAdd, onModify:handleModify, onDoubleClick:handleDoubleClick,
             onDelete:handleDelete, setSelectedItem:setSelectedItem, fetchAdminOption:fetchAdminOption }}> {/*passing data to all of the child*/}
 
             <Router />
@@ -215,7 +219,7 @@ function handleDoubleClick(event){
         </Context.Provider>
 {/*//////////////////////////////////////////////////////////////////*/}
         </div>
-     <footer>{`©${date.getFullYear()} Kier Dalit. All rights reserved.`}</footer>       
+     <footer className="prevent-select">{`©${date.getFullYear()} Kier Dalit. All rights reserved.`}</footer>       
     </div>
     );
 }

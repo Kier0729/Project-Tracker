@@ -1,0 +1,34 @@
+p{
+    height: fit-content;
+    width: 100%;
+    text-align: justify;
+    margin-bottom: 0;
+}
+.extract{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.extractOuter{
+    position: relative;
+    background-color: white;
+    border: .10rem solid black;
+    border-radius: 5px;
+    padding: 2rem;
+}
+.extractOuter>button{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: .2rem;
+    height: fit-content;
+}
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }

@@ -4,10 +4,13 @@ import Entry from "./Entry";
 import Context from "./Context"; //use for passing data to components/child using (Context.Provider)
 import NavBar from "./NavBar";
 import axios from "axios";
+import Popup from "./popup/Popup";
+import Extract from "./extract/Extract";
 
 function Home(){
     const data = useContext(Context); //passing the data received to a const data
     const [clientData, setClientData] = useState("");
+    const [clientExtract, setClientExtract] = useState(false);
 
     async function fetchOption(){
         console.log("Fetch Option");
@@ -51,15 +54,23 @@ function Home(){
     }
 
     useEffect(()=>{
-        !data.user.admin && fetchOption();    
+        !data.user.admin && fetchOption();
+        data.socPop && data.user && data.setPopup(`Login Successful. \nWelcome ${data.user.fname}.`);   
     },[]);
 
     return(
         <div>
-            <NavBar />
+            {   
+                <Context.Provider value={{clientData:clientData, clientExtract:clientExtract, setClientExtract:setClientExtract, ...data}} >
+                    <Extract />
+                    {!clientExtract && <NavBar />}
+                </Context.Provider>
+            }
+
+            {!clientExtract && <Popup />}
             {/* select to ONLY pass the selected data/function for practice*/}
             <Context.Provider value={{id:data.user.id, onAdd:data.onAdd, fetchYear:data.fetchYear}}>
-                <CreateEntry />
+                {!clientExtract && <CreateEntry />}
             </Context.Provider>
 
             {
@@ -71,7 +82,7 @@ function Home(){
             return(
 //value={OBJECT items:items+id OBJECT onModify function from the apps}                
             <Context.Provider key={index} value={{items:items, onDoubleClick:data.onDoubleClick, onModify:data.onModify}}>
-                <Entry />
+                {!clientExtract && <Entry />}
             </Context.Provider>
             );
             })

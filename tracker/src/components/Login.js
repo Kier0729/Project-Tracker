@@ -2,25 +2,36 @@ import axios from "axios";
 import React, {useState, useContext} from "react";
 import { useNavigate, Link } from "react-router-dom"; //for frontend routing//import useNavigate
 import Context from "./Context";
+import Popup from "./popup/Popup";
 
 function Login(){
     // axios.defaults.withCredentials = true;
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
     const data = useContext(Context);
     const[cred, setCred] = useState({username:"", password:""});
-    const[placeHold, setplaceHold] = useState(null);
+    const[errMsg, setErrMsg] = useState(null);
+    const[errMsg2, setErrMsg2] = useState(null);
+    const[isError , setIsError] = useState(false);
+    const[isError2 , setIsError2] = useState(false);
+    const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
     function handleChanged(event){
         const{name, value} = event.target;
+        // name ==="username" && value.match(isValidEmail) ? setIsError(false) : setIsError(true);
+        name==="username" && setIsError(false);
+        name==="password" && setIsError2(false);
         setCred((prev)=>{
             return(name==="username"?{username:value,password:prev.password}:{username:prev.username,password:value});
         });
     }
 
+    function handleSocialLog(){
+        axios.post(`${data.URL}/SocPop`, {socPop:true}, { withCredentials: true, });
+    }
+
     async function handleClick(event){
-        const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-            if(cred.username && cred.username.length && cred.username.match(isValidEmail)){
-                event.preventDefault();
+        event.preventDefault();
+            if(cred.username && cred.password && cred.username.length && cred.username.match(isValidEmail)){
                 // document.login.submit();
                 // { withCredentials: true } is needed to set in axios, to be able send cookies back to server for deserialize
                 await axios.post(`${data.URL}/Login`, {username:cred.username.toLowerCase(), password:cred.password},  { withCredentials: true, })
@@ -30,32 +41,51 @@ function Login(){
                                 data.setUser(res.data);
                                 data.fetchUser();//to make some update after login
                                 navigate("/Home");
-                                console.log("Login Successful!");
+                                data.setPopup(`Login Successful. \nWelcome ${res.data.fname}.`);
                             } else if(password){
                                 setCred((prev)=>{return{username:prev.username, password:""}});
-                                setplaceHold("Password Incorrect!");
-                                console.log("Password Incorrect!");
+                                setErrMsg2("Password Incorrect!");
+                                setIsError2(true);
+                                // data.setPopup(`Your password entry appears to be incorrect. \nPlease try again.`);
                             } if(notFound){
                                 data.setUser(null);
                                 setCred({username:"", password:""});
-                                setplaceHold("");
-                                console.log("User not exist!");
+                                setErrMsg("");
+                                data.setPopup(`User does not exist. \nTo log in, you have to register first.`);
                                 navigate("/Register");
                             }
                         });
-            } else {
-                console.log("Invalid Username!");
+            } else if (cred.username == ""){
+                setErrMsg("Please enter email.");
+                setIsError(true);
                 setCred((prev)=>{return {username:"", password:prev.password}});
-                navigate("/");
+                if(cred.password == ""){
+                    setErrMsg2("Enter your password.");
+                    setIsError2(true);
+                }
+            } else if (!cred.username.match(isValidEmail)){
+                setErrMsg("Enter a valid email.");
+                setIsError(true);
+            } else if (cred.password == ""){
+                setErrMsg2("Enter your password.");
+                setIsError2(true);
+                if(cred.username == ""){
+                    setErrMsg("Please enter email.");
+                    setIsError(true);
+                }
             }
     }
 
 return(
+    <div>
+        <Popup />
     <div className="login">
     <form id="login" name="login" className="login" onSubmit={handleClick} >
     <div>
-        <input type="email" name="username" placeholder="Username" value={cred.username} onChange={handleChanged} required></input>
-        <input type="password" name="password" placeholder={placeHold || "Password"} value={cred.password} onChange={handleChanged} required></input>
+        <input type="text" className={isError ? "error" : ""} name="username" placeholder="Username" value={cred.username} onChange={handleChanged}></input>
+        {isError ? <label className="loginLabel">{errMsg}</label> :""}
+        <input type="password" className={isError2 ? "error" : ""} name="password" placeholder="Password" value={cred.password} onChange={handleChanged}></input>
+        {isError2 ? <label className="loginLabel">{errMsg2}</label> :""}
         <div>
             <div></div>
             <div className="button">
@@ -76,14 +106,15 @@ return(
         <form className="socialLogin">
     <Link to={`${process.env.REACT_APP_API_URL}/auth/google`}>
     <button name="google" className="btn btn-lg btn-block btn-primary" style={{backgroundColor: "#dd4b39"}}
-    type="button"><i className="fab fa-google me-2"></i>Sign in with google</button>
+    type="button" onClick={handleSocialLog}><i className="fab fa-google me-2"></i>Sign in with google</button>
     </Link>
     <Link to={`${process.env.REACT_APP_API_URL}/auth/facebook`}>
     <button name="facebook" className="btn btn-lg btn-block btn-primary mb-2" style={{backgroundColor: "#3b5998"}}
-    type="button"><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
+    type="button" onClick={handleSocialLog}><i className="fab fa-facebook-f me-2"></i>Sign in with facebook</button>
     </Link>
         </form>
     </div>  
+</div>
 </div>
 );
 }

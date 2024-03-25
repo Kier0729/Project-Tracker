@@ -2,6 +2,7 @@ import axios from "axios";
 import React, {useEffect, useContext, useState} from "react";
 import Context from "./Context";
 import NavBar from "./NavBar";
+import Popup from "./popup/Popup";
 
 function Admin(){
     const data = useContext(Context);
@@ -31,10 +32,12 @@ function Admin(){
 
     useEffect(()=>{
         fetchAll();
+        data.socPop && data.user.admin && data.setPopup(`Login Successful. \nWelcome ${data.user.fname}.`);
     },[]);
 
     return (
     <div>
+        <Popup />
         <Context.Provider value={{...data, listId:listId, setListId:setListId}}>
         <NavBar />
         </Context.Provider>

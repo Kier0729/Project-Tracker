@@ -27,10 +27,13 @@
     touch-action: manipulation;
 }
 
-/* To set div to display at top so when the user click it will click the div instead of the label 
+/* (THIS WAS BEFORE) To set div to display at top so when the user click it will click the div instead of the label 
 when doubleclicking an entry*/
 .entry label{
     z-index: -1;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: center;
 }
 .modify{
     display: flex;
@@ -41,7 +44,6 @@ when doubleclicking an entry*/
     border-radius: 5px;
 }
 .modify input{
-    height: fit-content;
     width: 100%;
 }
 .modify div{
@@ -68,6 +70,22 @@ text-align: center;
     align-items: center;
     gap: 1rem;
 }
+
+.loginLabel{
+    color: red;
+    font-size: .60rem;
+    height: fit-content;
+}
+
+.errorPlaceholder::placeholder{
+    color: red;
+    font-size: .60rem;
+}
+.errorPlaceholder{
+    color: red;
+    font-size: .75rem;
+}
+
 .login>div{
     height: fit-content;
     width: fit-content;
@@ -226,9 +244,19 @@ a{
 .adminHome{
     padding: 2rem;
 }
+.column-name{
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(4, 1fr);
+}
 
 .socialLogin{
     display: flex;
     flex-direction: column;
     gap: .5rem;
+}
+
+.error {
+    border: 3px solid red;
+    border-radius: 5px;
 }

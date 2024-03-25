@@ -8,6 +8,7 @@ import Register from "./Register";
 import AdminHome from "./AdminHome";
 import React, { useContext, useEffect } from "react";
 import Context from "./Context"
+import Extract from "./extract/Extract";
 
 function Router(){
   const data = useContext(Context);

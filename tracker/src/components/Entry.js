@@ -10,17 +10,18 @@ function Entry(){
     const navigate = useNavigate(); //creating a constant for useNavigate(cannot be called inside a callback)
 
     return(
-    //Here z-index of label is set to -1 so when a user click a label it will click the div instead    
-    //the event trigger will be set to div istead of the label
+    //(THIS WAS BEFORE) Here z-index of label is set to -1 so when a user click a label it will click the div instead    
+    //(THIS WAS BEFORE) the event trigger will be set to div istead of the label
         <div type="submit" className="entry" id={data.items.id} onDoubleClick={(event)=>{
 {/* below/here calling onDoubleClick funtion from Apps.js and pass the element that triggers the event*/}        
-                data.onDoubleClick(event);
+                let myElement = document.getElementById(event.target.id);
+                data.onDoubleClick(myElement);
                 navigate("/Modify"); {/* ()=> {navigate("/modify")} call navigate when doubleclick*/}
             }} style={fname && {gridTemplateColumns: `repeat(4, 1fr)`}}>
-            {fname && <label name="fname" >{fname} {lname}</label>}
-            <label name="date" >{date}</label>
-            <label name="merchant" >{merchant}</label>
-            <label name="amount" >{amount}</label>
+            {fname && <label name={`fname`} id={data.items.id}>{fname} {lname}</label>}
+            <label name={`date`} id={data.items.id}>{date}</label>
+            <label name={`merchant`} id={data.items.id}>{merchant}</label>
+            <label name={`amount`} id={data.items.id}>{amount}</label>
         </div>
     );
 }

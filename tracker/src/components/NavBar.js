@@ -118,6 +118,7 @@ function NavBar(){
         }
         else {
             navigate("/");
+            data.setPopup(`Selected user doesn't have any saved data.`)
             data.setToNavigate(false);
         }
         },300);
@@ -136,7 +137,6 @@ function NavBar(){
 
     return(
         <div>
-            {console.log(options)}
             <div className="navBar">
                 <div className="logout">
                 <h4>Total expenses: {<label>{data.total || "0.00" }</label>}</h4>
@@ -168,7 +168,14 @@ function NavBar(){
                         return(<option key={index} value={items}>{items}</option>);
                     })}
                 </select>
-
+                {data.adminData || data.clientData ? <button onClick={()=>{
+                    !data.user.admin && data.clientData && data.setClientExtract(true)
+                    !data.user.admin && data.clientData.length == 0 && data.setPopup(`Nothing to export`)
+                    data.user.admin && data.adminData.length > 0 && data.setAdminExtract(true)
+                    data.user.admin && data.adminData.length == 0 && data.setPopup(`Nothing to export`)
+                    // navigate("/Export");
+                        }
+                    }>Export</button> : ""}                    
                 {data.user.admin && (data.toNavigate == false && <button onClick={handleClick}>View</button>)}
                 {data.user.admin && (data.toNavigate == true && <button onClick={handleBack}>Back</button>)}
             {/* view after modify */}
