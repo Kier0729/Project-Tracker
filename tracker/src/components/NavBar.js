@@ -8,7 +8,6 @@ function NavBar(){
     // axios.defaults.withCredentials = true;
     const data = useContext(Context);
     const navigate = useNavigate();
-
     const date = new Date();
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "View all"];
     const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
@@ -146,6 +145,7 @@ function NavBar(){
                 </div>
                 </div>
                 <div className="options">
+                    <div>
                 <label htmlFor="endCycle">Cycle date:</label>
                 {/* <input name="endCycle" id="endCycle" value={data.options.cycle || 0} onChange={handleChange}></input> */}
                 
@@ -175,10 +175,13 @@ function NavBar(){
                     data.user.admin && data.adminData.length == 0 && data.setPopup(`Nothing to export`)
                     // navigate("/Export");
                         }
-                    }>Export</button> : ""}                    
+                    }>Export</button> : ""}
+                                      
                 {data.user.admin && (data.toNavigate == false && <button onClick={handleClick}>View</button>)}
                 {data.user.admin && (data.toNavigate == true && <button onClick={handleBack}>Back</button>)}
+                </div>
             {/* view after modify */}
+                {data.user.user_pass != "facebook" && data.user.user_pass != "google" && <button className="change-pass-btn" onClick={()=>{navigate("/ChangePass")}}>Change Password</button>}
                 </div>
             </div>
         </div>

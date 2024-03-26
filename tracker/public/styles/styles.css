@@ -138,6 +138,10 @@ text-align: center;
     grid-auto-flow: column;
 }
 .options{
+    display: grid;
+    grid-template-columns: 1fr .25fr ;
+}
+.options>div{
     display: flex;
     gap: .25rem;
 }
@@ -165,33 +169,38 @@ text-align: center;
 }
 
 @media (max-width: 1000px) {
-.createEntry{
+    .navBar button{
+        font-size: .75rem;
+    }    
+    .createEntry{
     grid-template-columns:  1fr 1fr 1fr 10%;
-}
-.createEntry>input{
-    width: 100%;
+    }
+    .createEntry>input{
+        width: 100%;
+    }
+
+    .navBar>h4{
+        font-size: 15px;
+    }
+    .navBar label{
+        font-size: 15px;
+    }
+    .navBar>div>h4>label{
+        font-size: 20px;
+    }
+    .navBar input{
+        font-size: 15px;
+    }
+    .navBar select{
+        font-size: 15px;
+        max-width: 6rem;
+    }
+    .navBar select[name="year"]{
+        max-width: 4rem;
+    }
+
 }
 
-.navBar>h4{
-    font-size: 15px;
-}
-.navBar label{
-    font-size: 15px;
-}
-.navBar>div>h4>label{
-    font-size: 20px;
-}
-.navBar input{
-    font-size: 15px;
-}
-.navBar select{
-    font-size: 15px;
-    max-width: 6rem;
-}
-.navBar select[name="year"]{
-    max-width: 4rem;
-}
-}
 #endCycle{
     width: 2.5rem;
     text-align: center;   
@@ -260,3 +269,4 @@ a{
     border: 3px solid red;
     border-radius: 5px;
 }
+

@@ -66,7 +66,6 @@ function Home(){
                     {!clientExtract && <NavBar />}
                 </Context.Provider>
             }
-
             {!clientExtract && <Popup />}
             {/* select to ONLY pass the selected data/function for practice*/}
             <Context.Provider value={{id:data.user.id, onAdd:data.onAdd, fetchYear:data.fetchYear}}>

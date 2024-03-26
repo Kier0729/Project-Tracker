@@ -8,7 +8,7 @@ import Register from "./Register";
 import AdminHome from "./AdminHome";
 import React, { useContext, useEffect } from "react";
 import Context from "./Context"
-import Extract from "./extract/Extract";
+import ChangePass from "./changePass/ChangePass";
 
 function Router(){
   const data = useContext(Context);
@@ -56,6 +56,7 @@ function Router(){
             <Route path={`/Home`} element={isAdmin}/> {/*Outlet/Child*/}
             <Route path={`/Modify`} element={data.selectedItem && <Modify />}/>{/*Outlet/Child*/}
             <Route path={`/AdminHome`} element={isAdmin2} />{/*Outlet/Child*/}
+            <Route path={`/ChangePass`} element={user ? <ChangePass /> : <Login />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </HashRouter>

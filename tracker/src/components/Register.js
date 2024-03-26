@@ -10,7 +10,6 @@ function Register(){
     const data = useContext(Context);
 
     const[cred, setCred] = useState({username:"", password:"", rePassword:"", fname:"", lname:""});
-    const[placeHold, setplaceHold] = useState(null);
     const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const[errMsg, setErrMsg] = useState({errMsg1:"", errMsg2:"", errMsg3:"", errMsg4:"", errMsg5:""});
     const[isError , setIsError] = useState({isError1:false, isError2:false, isError3:false, isError4:false, isError5:false});
@@ -72,7 +71,6 @@ function Register(){
         event.preventDefault();
             if(cred.username !="" && cred.username.match(isValidEmail) && cred.password !="" && cred.rePassword !="" && cred.fname !="" && cred.lname !=""){
                 if(cred.password == cred.rePassword){
-                    setplaceHold(null);
                     // document.register.submit();
                     await axios.post(`${data.URL}/Register`, {...cred, username:cred.username.toLowerCase()}, { withCredentials: true})
                     .then(res=>{

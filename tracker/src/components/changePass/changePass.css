@@ -1,0 +1,22 @@
+.change-pass{
+    display: flex;
+    font-size: .80rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    height: 100vh;
+}
+.btn-container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: .25rem;
+}
+.change-pass-inner{
+    display: flex;
+    flex-direction: column;
+}
+.change-pass-inner>label{
+    text-align: center;
+}

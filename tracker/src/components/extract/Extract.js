@@ -1,10 +1,8 @@
 import React, { useContext } from "react";
 import Context from "../Context";
-import {useNavigate} from "react-router-dom";
 import "./extract.css"
 
 function Extract(){
-    // const navigate = useNavigate();
     const data = useContext(Context);
     if (data.clientExtract || data.adminExtract){
         return (
