@@ -152,7 +152,7 @@ function handleDoubleClick(event){
             amount: received.amount
         }
         //if server is present
-        await axios.post(`${URL}/`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})//postData(hence use receieved) here is not updated when this is executed
+        await axios.post(`${URL}/`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, {withCredentials:true})//postData(hence use receieved) here is not updated when this is executed
         .then(res=>{
             console.log(res.data);
         })
@@ -177,7 +177,7 @@ function handleDoubleClick(event){
             merchant: received.merchant,
             amount: received.amount
         }
-        await axios.patch(`${URL}/update`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear})
+        await axios.patch(`${URL}/update`, {...received, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear}, {withCredentials:true})
         .then(res=>{
             console.log(res.data);
         })

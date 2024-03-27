@@ -176,8 +176,9 @@ function NavBar(){
                     // navigate("/Export");
                         }
                     }>Export</button> : ""}
+                    {data.user.admin && <button onClick={()=>navigate("/ResetPassword")}>Modify Account</button>}
                                       
-                {data.user.admin && (data.toNavigate == false && <button onClick={handleClick}>View</button>)}
+                {data.user.admin && (data.toNavigate == false && <button onClick={handleClick}>View Data</button>)}
                 {data.user.admin && (data.toNavigate == true && <button onClick={handleBack}>Back</button>)}
                 </div>
             {/* view after modify */}

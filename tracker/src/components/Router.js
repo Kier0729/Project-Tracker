@@ -9,6 +9,8 @@ import AdminHome from "./AdminHome";
 import React, { useContext, useEffect } from "react";
 import Context from "./Context"
 import ChangePass from "./changePass/ChangePass";
+import ResetPassword from "./changePass/ResetPassword";
+
 
 function Router(){
   const data = useContext(Context);
@@ -57,6 +59,7 @@ function Router(){
             <Route path={`/Modify`} element={data.selectedItem && <Modify />}/>{/*Outlet/Child*/}
             <Route path={`/AdminHome`} element={isAdmin2} />{/*Outlet/Child*/}
             <Route path={`/ChangePass`} element={user ? <ChangePass /> : <Login />} />{/*Outlet/Child*/}
+            <Route path={`/ResetPassword`} element={user && user.admin && <ResetPassword />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </HashRouter>

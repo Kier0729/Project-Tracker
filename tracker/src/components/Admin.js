@@ -43,7 +43,7 @@ function Admin(){
         </Context.Provider>
         
         <div className="listUser">
-        <h4>List of users</h4>
+        <h4>List of client accounts</h4>
             <div>
             {listUser && listUser.map((items, index)=>{
                 return(
