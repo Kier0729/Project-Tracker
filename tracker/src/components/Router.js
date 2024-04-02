@@ -59,7 +59,7 @@ function Router(){
             <Route path={`/Modify`} element={data.selectedItem && <Modify />}/>{/*Outlet/Child*/}
             <Route path={`/AdminHome`} element={isAdmin2} />{/*Outlet/Child*/}
             <Route path={`/ChangePass`} element={user ? <ChangePass /> : <Login />} />{/*Outlet/Child*/}
-            <Route path={`/ResetPassword`} element={user && user.admin && <ResetPassword />} />{/*Outlet/Child*/}
+            <Route path={`/ResetPassword`} element={user && user.admin ? <ResetPassword /> : <Navigate to="/Home" />} />{/*Outlet/Child*/}
           </Route>
         </Routes>
     </HashRouter>

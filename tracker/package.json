@@ -42,6 +42,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "proxy":"http://localhost:4000"
+  "proxy":"https://project-tracker-server-h8ni.onrender.com"
 }
 

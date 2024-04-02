@@ -16,6 +16,7 @@ function ResetPassword(){
     const[isError, setIsError] = useState({isError1:false, isError2:false, isError3:false, isError4:false})
     const[onNotif, setOnNotif] = useState(false)
     const[notif, setNotif] = useState("")
+    const[isDelete, setIsDelete] = useState(false);
 
     async function fetchAll(){
         await axios.get(`${data.URL}/fetchAdmin`,{ withCredentials: true  }).then(
@@ -55,7 +56,8 @@ function ResetPassword(){
         }
     }
 
-    function handleClick(){
+    function handleClick(received){
+        if(received == "reset"){
         const confirm = selected && document.getElementsByName(selected)[0].id;
         if(!selected){setIsError({...isError, isError3:true}); setErrMsg({...errMsg, errMsg3:"Please select an account:"});}
         else if(!cred.newPass){setIsError({...isError, isError1:true}); setErrMsg({...errMsg, errMsg1:"Please fill out this field:"});}
@@ -67,20 +69,45 @@ function ResetPassword(){
         } else if(selected && cred.newPass && cred.conPass && cred.newPass == cred.conPass && confirm != "google" || confirm != "facebook"){
             setOnNotif(true)
         }
+    } if(received == "delete"){
+        if(selected){
+        setOnNotif(true)
+        setIsDelete(true)
+        } else {
+            setIsError({...isError, isError3:true})
+            setErrMsg({...errMsg, errMsg3:"Please select an account:"})
+        }
     }
-    async function handleConfirm(){
+
+    }
+    async function handleConfirm(received){
         // setOnNotif(false)
+        console.log(received)
         const confirm = selected && document.getElementsByName(selected)[0].innerHTML;
         if(cred.adminPass){
             
             if((confirm.toLowerCase()).replace(/\s/g, '') == (cred.adminPass.toLowerCase()).replace(/\s/g, '')){
-                const result = await axios.post(`${data.URL}/ResetPassword`, {id:selected, password:cred.newPass}, {withCredentials:true})
-                if(result.data == "Success"){
-                    setNotif("Password updated!")
-                    setOnNotif(false)
-                } else {
-                    setNotif("Updating password failed!")
+                if(received == "reset"){
+                    const result = await axios.post(`${data.URL}/ResetPassword`, {id:selected, password:cred.newPass}, {withCredentials:true})
+                    if(result.data == "Success"){
+                        setNotif("Password updated!")
+                        setOnNotif(false)
+                    } else {
+                        setNotif("Updating password failed!")
+                    }
+                } else if(received == "delete"){
+                    const result = await axios.post(`${data.URL}/DeleteAccount`, {id:selected}, {withCredentials:true})
+                    if(result.data == "Success"){
+                        setErrMsg({errMsg1:"", errMsg2:"", errMsg3:"", errMsg4:""})
+                        setIsError({isError1:false, isError2:false, isError3:false, isError4:false})
+                        fetchAll()
+                        setNotif("Account Deleted!")
+                        setOnNotif(false)
+                    } else {
+                        setNotif("Updating password failed!")
+                    }
                 }
+
             } else {
                 setIsError({...isError, isError4:true}); 
                 setErrMsg({...errMsg, errMsg4:`Input mismatched. Please enter: ${confirm}`});
@@ -118,18 +145,21 @@ function ResetPassword(){
             </div>
 
             <div className="btn-container">
-            <button onClick={handleClick}>Save Password</button>
-            <button>Delete Account</button>
+            <button onClick={()=>handleClick("reset")}>Save Password</button>
+            <button onClick={()=>handleClick("delete")}>Delete Account</button>
             <button onClick={()=>navigate("/Home")}>Back</button>
             </div>
 
             </div>
             {onNotif && <div className="notif">
                 <div>
-                <label htmlFor="password">{errMsg.errMsg4 || `To confirm the update, please re-type: ${selected && document.getElementsByName(selected)[0].innerHTML}`}</label>
+                <label htmlFor="password">{errMsg.errMsg4 || `To confirm ${!isDelete ? "password reset" : "account deletion"}, please re-type: ${selected && document.getElementsByName(selected)[0].innerHTML}`}</label>
                 <input className={isError.isError4 ? "error" : ""} name="adminPass" value={cred.adminPass} onChange={handleChange}></input>
-                <button onClick={handleConfirm}>Confirm</button>
-                <button onClick={()=>setOnNotif(false)}>Back</button>
+                <button onClick={()=>handleConfirm(isDelete ? "delete" : "reset")}>Confirm</button>
+                <button onClick={()=>{
+                    setOnNotif(false)
+                    setIsDelete(false)
+                }}>Back</button>
                 </div>
             </div>}
         </div>
