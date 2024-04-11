@@ -168,7 +168,7 @@ function NavBar(){
                         return(<option key={index} value={items}>{items}</option>);
                     })}
                 </select>
-                {data.adminData || data.clientData ? <button onClick={()=>{
+                {/*data.adminData || data.clientData ?*/ data.clientData || data.toNavigate == true ? <button onClick={()=>{
                     !data.user.admin && data.clientData && data.setClientExtract(true)
                     !data.user.admin && data.clientData.length == 0 && data.setPopup(`Nothing to export`)
                     data.user.admin && data.adminData.length > 0 && data.setAdminExtract(true)
@@ -176,13 +176,15 @@ function NavBar(){
                     // navigate("/Export");
                         }
                     }>Export</button> : ""}
-                    {data.user.admin && <button onClick={()=>navigate("/ResetPassword")}>Modify Account</button>}
+                    {data.user.admin && data.toNavigate == false && <button onClick={()=>navigate("/ResetPassword")}>Modify Account</button>}
                                       
                 {data.user.admin && (data.toNavigate == false && <button onClick={handleClick}>View Data</button>)}
                 {data.user.admin && (data.toNavigate == true && <button onClick={handleBack}>Back</button>)}
                 </div>
             {/* view after modify */}
+                <div className="change-pass-con">
                 {data.user.user_pass != "facebook" && data.user.user_pass != "google" && <button className="change-pass-btn" onClick={()=>{navigate("/ChangePass")}}>Change Password</button>}
+                </div>
                 </div>
             </div>
         </div>

@@ -155,11 +155,13 @@ function ResetPassword(){
                 <div>
                 <label htmlFor="password">{errMsg.errMsg4 || `To confirm ${!isDelete ? "password reset" : "account deletion"}, please re-type: ${selected && document.getElementsByName(selected)[0].innerHTML}`}</label>
                 <input className={isError.isError4 ? "error" : ""} name="adminPass" value={cred.adminPass} onChange={handleChange}></input>
-                <button onClick={()=>handleConfirm(isDelete ? "delete" : "reset")}>Confirm</button>
-                <button onClick={()=>{
-                    setOnNotif(false)
-                    setIsDelete(false)
-                }}>Back</button>
+                    <div className="btn-container">
+                    <button onClick={()=>handleConfirm(isDelete ? "delete" : "reset")}>Confirm</button>
+                    <button onClick={()=>{
+                        setOnNotif(false)
+                        setIsDelete(false)
+                    }}>Back</button>
+                    </div>
                 </div>
             </div>}
         </div>

@@ -1,4 +1,7 @@
 
+body{
+    min-width: 800px;
+}
 .createEntry{
     display: grid;
     grid-template-columns:  1fr 1fr 1fr 10%;
@@ -169,6 +172,9 @@ text-align: center;
 }
 
 @media (max-width: 1000px) {
+    button[class="change-pass-btn"]{
+        font-size: .5rem;
+    }
     .navBar button{
         font-size: .75rem;
     }    
@@ -202,7 +208,7 @@ text-align: center;
 }
 
 #endCycle{
-    width: 2.5rem;
+    width: 3rem;
     text-align: center;   
 }
 footer{
@@ -269,4 +275,23 @@ a{
     border: 3px solid red;
     border-radius: 5px;
 }
+
+/* @media (min-width:1001px) and (max-width: 1200px) {
+    button[class="change-pass-btn"]{
+        width: max-content;
+    }
+} */
+button[class="change-pass-btn"]{
+    width: max-content;
+}
+.change-pass-con{
+    display: flex;
+    justify-content: flex-end;
+}
+
+label[name="merchant"]{
+    text-wrap: nowrap;
+    overflow: hidden;
+}
+
 
