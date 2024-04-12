@@ -61,8 +61,9 @@ async function fetchAdminOption(){
     console.log("FetchAdminOption");
     await axios.get(`${URL}/fetchAdminOption`, { withCredentials: true  }).then(
         async res=>{
+            console.log(res.data)
             // res.data.adminOption.toNavigate && setOptions({cycle:res.data.adminOption.cycle, selectedMonth:res.data.adminOption.month, selectedYear:res.data.adminOption.year});
-            res.data.adminOption.toNavigate && setToNavigate(res.data.adminOption.toNavigate);
+            res.data.adminOption.toNavigate ? setToNavigate(res.data.adminOption.toNavigate) : setToNavigate(false);
             res.data.selectedItem && setSelectedItem(res.data.selectedItem.modify);
             if (res.data.adminOption.month && res.data.adminOption.year){
                 const result = await axios.get(`${URL}/year`);
