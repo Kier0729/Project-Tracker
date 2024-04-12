@@ -13,6 +13,7 @@ function ChangePass(){
     const navigate = useNavigate();
 
     async function handleClick(){
+        console.log(data)
         if(!cred.password) {
             setErrMsg({...errMsg, errMsg1:"Please fill out this field."})
             setIsError({...isError, isError1:true})

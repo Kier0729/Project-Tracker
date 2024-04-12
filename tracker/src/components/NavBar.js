@@ -183,7 +183,7 @@ function NavBar(){
                 </div>
             {/* view after modify */}
                 <div className="change-pass-con">
-                {data.user.user_pass != "facebook" && data.user.user_pass != "google" && <button className="change-pass-btn" onClick={()=>{navigate("/ChangePass")}}>Change Password</button>}
+                {data.user.user_pass != "facebook" && data.user.user_pass != "google" && <button className="change-pass-btn" onClick={()=>{navigate("/ChangePass");}}>Change Password</button>}
                 </div>
                 </div>
             </div>

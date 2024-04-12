@@ -94,7 +94,7 @@ function Modify(){
             </div>
             <div>
                 <button onClick={()=>{
-                    if(modify.date && modify.merchant && modify.amount.replace(/,/g,"") && modify.amount != 0 && isnumber && isDate && dateFormat && noSpace ){
+                    if(modify.date && modify.merchant && modify.amount.replace(/,/g,"") > 0 && modify.amount != 0 && isnumber && isDate && dateFormat && noSpace ){
                         data.onModify({...modify, amount: modify.amount.replace(/,/g,"")});
                         data.setSelectedItem("");
                         postSelectedItem();
@@ -111,9 +111,9 @@ function Modify(){
                     } else if (!noSpace){
                         setIsError({...isError, isError2:true});
                         setErrMsg({...errMsg, errMsg2:"Please don't leave merchant field blank:"});
-                    }  else if (!modify.amount.replace(/,/g,"") || modify.amount == 0){
+                    }  else if (modify.amount.replace(/,/g,"") <= 0){
                         setIsError({...isError, isError3:true});
-                        setErrMsg({...errMsg, errMsg3:"Please enter the amount:"});
+                        setErrMsg({...errMsg, errMsg3:"Please enter a positive numeric amount:"});
                     } else if (!isnumber) {
                         setIsError({...isError, isError3:true});
                         setErrMsg({...errMsg, errMsg3:"Please enter a valid amount:"});

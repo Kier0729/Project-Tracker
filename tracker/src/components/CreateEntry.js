@@ -80,7 +80,7 @@ const dateFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(data.date);
             so it will only execute once a click/event was triggered onClick={()=>{myContext.onAdd("Data")}} */}
             <button type="button" onClick={(event)=>{
                 event.preventDefault();
-                if(data.amount.replace(/,/g,"")&& data.amount != 0 && data.date && data.merchant && isnumber && isDate && dateFormat && noSpace){
+                if(data.amount.replace(/,/g,"") > 0 && data.amount != 0 && data.date && data.merchant && isnumber && isDate && dateFormat && noSpace){
                     myContext.onAdd({...data, amount:data.amount.replace(/,/g,"")});
                     setData({entry_id: `${myContext.id}`, date:"", merchant:"", amount:""});
                 } else if (!data.date){
@@ -98,9 +98,9 @@ const dateFormat = /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(data.date);
                 } else if (isnumber == false){
                     setIsError({...isError, isError2:true})
                     setErrMsg({...errMsg, errMsg2:"Please enter a valid amount:"})
-                } else if (!data.amount.replace(/,/g,"") || data.amount == 0){
+                } else if (data.amount.replace(/,/g,"") <= 0){
                     setIsError({...isError, isError2:true})
-                    setErrMsg({...errMsg, errMsg2:"Please enter the amount:"})
+                    setErrMsg({...errMsg, errMsg2:"Please enter an amount greater than 0:"})
                 }
                 //.replace(/,/g,"")
 

@@ -8,7 +8,7 @@ import axios from "axios";
 //naming env content starts with REACT_APP_ and no "" for the values
 
 function App(){
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 const URL = process.env.REACT_APP_API_URL;
 //Data received from server/api
 //////////////////////////////////////////////////////////////////
@@ -197,7 +197,8 @@ function handleDoubleClick(event){
 
         //if server is present pass the id/index
         const data = {id:id, month:options.selectedMonth, cycle:options.cycle, year:options.selectedYear};
-        await axios.delete(`${URL}/delete`, {data}, { withCredentials: true })//option here should be set as an object
+        //for axios.delete if you set data axios wont send cookies even if you set withCredentials instead set "axios.defaults.withCredentials = true"
+        await axios.delete(`${URL}/delete`, {data}, {withCredentials:true})//option here should be set as an object
         //for axios.delete option can have an optional {headers,data(always named as data)} where data holds the body or value to be pass
         .then(res=>{
             console.log(res.data);
