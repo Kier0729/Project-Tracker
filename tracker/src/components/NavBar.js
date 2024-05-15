@@ -97,30 +97,35 @@ function NavBar(){
     }
 
     async function handleClick(event){
-        setTimeout( async ()=>{
-            fetchYear();
-        const result2 = await axios.post(`${data.URL}/toNavigate`, {...data.options, id:data.listId}, { withCredentials: true });
-            if(result2.data[0].length>0){
-            data.setToNavigate(true);
-
-        const result = await axios.post(`${data.URL}/postFetchAdminData&Option`, {...data.options, id:data.listId, toNavigate:true}, { withCredentials: true });
-            result.data.forEach(items => {
-            let sum = 0;
-            if(result.data){ 
-                result.data.map(items => {
-                sum = sum + items.amount;
-            });
-            data.setTotal(sum.toFixed(2)); 
+        if(data.listId.length > 0){
+            setTimeout( async ()=>{
+                fetchYear();
+            const result2 = await axios.post(`${data.URL}/toNavigate`, {...data.options, id:data.listId}, { withCredentials: true });
+                if(result2.data[0].length>0){
+                data.setToNavigate(true);
+    
+            const result = await axios.post(`${data.URL}/postFetchAdminData&Option`, {...data.options, id:data.listId, toNavigate:true}, { withCredentials: true });
+                result.data.forEach(items => {
+                let sum = 0;
+                if(result.data){ 
+                    result.data.map(items => {
+                    sum = sum + items.amount;
+                });
+                data.setTotal(sum.toFixed(2)); 
+                }
+                })
+                navigate("/AdminHome");
             }
-            })
-            navigate("/AdminHome");
-        }
-        else {
-            navigate("/");
-            data.setPopup(`Selected user doesn't have any saved data.`)
+            else {
+                navigate("/");
+                data.setPopup(`Selected user doesn't have any saved data.`)
+                data.setToNavigate(false);
+            }
+            },300);
+        } else {
+            data.setPopup(`Please select a user.`)
             data.setToNavigate(false);
         }
-        },300);
     }
 
     async function handleBack(){
