@@ -81,7 +81,7 @@ return(
         <Popup />
         <h5 className="myh5">Please attempt to log in repeatedly until the database and server load.</h5>
         <h5 className="myh5">(It takes an average of 15-30secs due to free server account being used)</h5>
-        <h5 className="myh5">Also the server will automatically disconnect after 5 minutes of inactivity.</h5>
+        <h5 className="myh5">Also the server will automatically disconnect after 5 minutes of inactivity and sign in with Facebook is available to a specific users only. Try to register or use sign in with Google.</h5>
     <div className="login">
     <form id="login" name="login" className="login" onSubmit={handleClick} >
     <div>
