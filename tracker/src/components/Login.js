@@ -78,6 +78,7 @@ function Login(){
 
 return(
     <div>
+        {console.log(cred.username)}
         <Popup />
     <div className="login">
     <form id="login" name="login" className="login" onSubmit={handleClick} >
