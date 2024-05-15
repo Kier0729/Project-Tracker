@@ -2,6 +2,9 @@
 body{
     min-width: 800px;
 }
+.myh5{
+    text-align: center;
+}
 .createEntry{
     display: grid;
     grid-template-columns:  1fr 1fr 1fr 10%;

@@ -78,8 +78,9 @@ function Login(){
 
 return(
     <div>
-        {console.log(cred.username)}
         <Popup />
+        <h5 className="myh5">Please attempt to log in repeatedly until the database and server load.</h5>
+        <h5 className="myh5">(It takes an average of 15-30secs due to free account used)</h5>
     <div className="login">
     <form id="login" name="login" className="login" onSubmit={handleClick} >
     <div>
